@@ -2,7 +2,9 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "qlippy": "node ./bin/dev.mjs --app=qlippy"
+    "qlippy": "node ./bin/dev.mjs --app=qlippy",
+    "qlippy-dev": "node ./bin/build.mjs --quick --app=qlippy",
+    "qlippy-prod": "node ./bin/build.mjs --app=qlippy"
   },
   "dependencies": {},
   "devDependencies": {

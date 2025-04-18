@@ -1,60 +1,55 @@
 import 'zx/globals'
-import {readBackendPackageJsonKey, writeBackendPackageJson} from "./utils.mjs";
-
-const {path: targetPath, quick} = argv;
-
-if (!targetPath) throw new Error("path is required");
-cd(targetPath);
-
-const {stdout} = await $`git rev-parse HEAD`;
-const commitHash = stdout.trim();
-
-const currentVersion = await readBackendPackageJsonKey('version');
-
-await writeBackendPackageJson('version', `${currentVersion}.${commitHash}`);
-
-const restore = async () => {
-    await writeBackendPackageJson('version', currentVersion);
-}
-
-process.on("SIGINT", async () => {
-    await restore();
-});
+import {
+    fsExists,
+    readPackageJsonKey,
+    setupProject,
+    writePackageJsonWithRestore
+} from "./utils.mjs";
 
 try {
+    const {app, quick} = argv;
+
+    const {BACKEND_DIR, FRONTEND_DIR, BACKEND_PACKAGE_JSON} = await setupProject(app);
+
+// Getting the commit hash
+    const {stdout} = await $`git rev-parse HEAD`;
+    const commitHash = stdout.trim();
+
+// Add hash to the version in the backend package json file.
+    const currentVersion = await readPackageJsonKey(BACKEND_PACKAGE_JSON,'version');
+    await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'version', `${currentVersion}.${commitHash}`);
 
     echo`~~~ Cleaning up previous build files...`
     await Promise.allSettled([
-        $`rm -r packages/backend/.webpack`,
-        $`rm -r packages/backend/out`,
-        $`rm -r packages/frontend/.next`,
-        $`rm -r packages/frontend/out`,
+        $`rm -r ${BACKEND_DIR}/.webpack`,
+        $`rm -r ${BACKEND_DIR}/out`,
+        $`rm -r ${FRONTEND_DIR}/.next`,
+        $`rm -r ${FRONTEND_DIR}/out`,
     ])
 
     if (quick) {
         echo`~~~ Build frontend quickly...`
-        await $`npm run build-quick --workspace=packages/frontend`
+        await $`lerna run build-quick --scope=${app}-frontend`
     } else {
         echo`~~~ Build frontend...`
-        await $`npm run build --workspace=packages/frontend`
+        await $`lerna run build --scope=${app}-frontend`
     }
 
-    // Ensure the frontend build ends up in the backend build output folder.
+// Ensure the frontend build ends up in the backend build output folder.
     const feInterval = setInterval(async () => {
-        const frontendIsPresent = await fs.pathExists('packages/backend/.webpack/renderer/')
+        const frontendIsPresent = await fsExists(`${BACKEND_DIR}/.webpack/renderer/`)
         if (!frontendIsPresent) {
             echo`~~~ Copy compiled frontend packages into the backend renderer build folder...`
-            await $`mkdir -p packages/backend/.webpack/renderer/`
-            await $`cp -r packages/frontend/out/* packages/backend/.webpack/renderer/`;
+            await $`mkdir -p ${BACKEND_DIR}/.webpack/renderer/`
+            await $`cp -r ${FRONTEND_DIR}/out/* ${BACKEND_DIR}/.webpack/renderer/`;
         }
     }, 100)
 
     echo`~~~ Build backend...`
-    await $`npm run make --workspace=packages/backend`;
+    await $`lerna run build --scope=${app}-backend`;
 
     clearInterval(feInterval);
-} catch {
-    // Don't really care
-} finally {
-    await restore()
+
+ } catch (_) {
+    // eh...
 }

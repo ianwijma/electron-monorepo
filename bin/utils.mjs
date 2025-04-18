@@ -1,6 +1,12 @@
 import "zx/globals"
 import * as $ from "zx"
 import fs from "fs/promises";
+import path from "path";
+import {fileURLToPath} from "url";
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
+const PROJECT_ROOT = path.resolve(__dirname, '..');
 
 /**
  * @param packageJsonPath {string}
@@ -58,4 +64,28 @@ export const writePackageJsonWithRestore = async (packageJsonPath, key, value) =
     process.once("SIGINT", async () => {
         await writePackageJson(packageJsonPath, key, currentValue);
     })
+}
+
+
+export const setupProject = async (app) => {
+    const BACKEND_DIR = path.join(PROJECT_ROOT, 'src', 'applications', `${app}-backend`);
+    const COMMON_DIR = path.join(PROJECT_ROOT, 'src', 'applications', `${app}-common`);
+    const FRONTEND_DIR = path.join(PROJECT_ROOT, 'src', 'applications', `${app}-frontend`);
+    const APP_DIRS = [BACKEND_DIR, COMMON_DIR, FRONTEND_DIR];
+
+    for (const dir of APP_DIRS) {
+        const dirExists = await fsExists(dir);
+        if (!dirExists) {
+            throw new Error(`App does not seem to exists, dir not found: ${dir}`);
+        }
+    }
+
+    const BACKEND_PACKAGE_JSON = path.join(BACKEND_DIR, 'package.json');
+    const COMMON_PACKAGE_JSON = path.join(COMMON_DIR, 'package.json');
+    const FRONTEND_PACKAGE_JSON = path.join(FRONTEND_DIR, 'package.json');
+
+    return {
+        BACKEND_DIR, FRONTEND_DIR, COMMON_DIR,
+        BACKEND_PACKAGE_JSON, COMMON_PACKAGE_JSON, FRONTEND_PACKAGE_JSON
+    }
 }

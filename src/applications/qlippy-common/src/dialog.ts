@@ -1,5 +1,5 @@
-import {SimpleEventBusData} from "qlippy-common/src/eventbus.types";
-import {dialogRequestName, DialogRequestRes, DialogRequestReq} from 'qlippy-common/src/requests/dialog.request';
+import {SimpleEventBusData} from "./eventbus.types";
+import {dialogRequestName, DialogRequestRes, DialogRequestReq} from './requests/dialog.request';
 import {ResponseHandler} from "./createResponseHandler";
 
 type OpenInputDialogOptions = {

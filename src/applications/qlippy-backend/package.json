@@ -9,7 +9,7 @@
     "dev-reset": "npm run start --reset",
     "start": "APP_ENV=dev electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "build": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
