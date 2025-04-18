@@ -1,4 +1,4 @@
-import {protocol, nativeImage} from 'electron'
+import {protocol} from 'electron'
 // @ts-ignore
 import puppeteer from "puppeteer";
 

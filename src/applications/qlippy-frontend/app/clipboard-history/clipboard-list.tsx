@@ -1,5 +1,4 @@
 import {
-    ClipboardHistory,
     ClipboardItem,
 } from "qlippy-common/src/settings/clipboard.settings.types";
 import {useEffect, useRef} from "react";
@@ -46,7 +45,7 @@ export const ClipboardList = ({ history, selectedIndex, onItemClicked, onItemDou
 
                             <ul className='w-full flex flex-col gap-1'>
                                 {
-                                    items.map(({item}, index) => {
+                                    items.map(({item}) => {
                                         const {id} = item;
                                         const currentIndex = indexRef.current++;
                                         const isSelected = selectedIndex === currentIndex;

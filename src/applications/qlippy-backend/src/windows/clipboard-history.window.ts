@@ -1,5 +1,4 @@
 import {createWindow} from "./createWindow";
-import {isDev} from "../utils/isDev";
 import {isDebug} from "../utils/isDebug";
 
 export const clipboardHistoryWindow = createWindow({

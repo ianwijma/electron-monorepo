@@ -89,6 +89,7 @@ export const setupProject = async (app) => {
     const FRONTEND_PACKAGE_JSON = path.join(FRONTEND_DIR, 'package.json');
 
     return {
+        PROJECT_ROOT,
         BACKEND_DIR, FRONTEND_DIR, COMMON_DIR,
         BACKEND_PACKAGE_JSON, COMMON_PACKAGE_JSON, FRONTEND_PACKAGE_JSON
     }
