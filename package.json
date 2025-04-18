@@ -4,7 +4,10 @@
   "scripts": {
     "qlippy": "node ./bin/dev.mjs --app=qlippy",
     "qlippy-dev": "node ./bin/build.mjs --quick --app=qlippy",
-    "qlippy-prod": "node ./bin/build.mjs --app=qlippy"
+    "qlippy-prod": "node ./bin/build.mjs --app=qlippy",
+    "qommand": "node ./bin/dev.mjs --app=qommand",
+    "qommand-dev": "node ./bin/build.mjs --quick --app=qommand",
+    "qommand-prod": "node ./bin/build.mjs --app=qommand"
   },
   "dependencies": {},
   "devDependencies": {
