@@ -2,13 +2,15 @@ import "zx/globals"
 import concurrently from "concurrently";
 import {readPackageJsonKey, setupProject, writePackageJsonWithRestore} from './utils.mjs'
 
+let restore;
+
 try {
     const {app} = argv;
 
     const {BACKEND_DIR, FRONTEND_DIR, BACKEND_PACKAGE_JSON} = await setupProject(app);
 
     const currentProductName = await readPackageJsonKey(BACKEND_PACKAGE_JSON,'productName');
-    await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'productName', `${currentProductName}-dev`);
+    restore = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'productName', `${currentProductName}-dev`);
 
     try {
         const {result} = concurrently(
@@ -36,4 +38,7 @@ try {
     }
 } catch (_) {
     // eh...
+}
+finally {
+    await restore();
 }

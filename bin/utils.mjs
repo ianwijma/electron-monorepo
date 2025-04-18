@@ -61,9 +61,13 @@ export const writePackageJsonWithRestore = async (packageJsonPath, key, value) =
 
     await writePackageJson(packageJsonPath, key, value);
 
-    process.once("SIGINT", async () => {
+    const restore = async () => {
         await writePackageJson(packageJsonPath, key, currentValue);
-    })
+    }
+
+    process.once("SIGINT", restore);
+
+    return restore
 }
 
 

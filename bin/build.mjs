@@ -6,18 +6,20 @@ import {
     writePackageJsonWithRestore
 } from "./utils.mjs";
 
+let restore;
+
 try {
     const {app, quick} = argv;
 
     const {BACKEND_DIR, FRONTEND_DIR, BACKEND_PACKAGE_JSON} = await setupProject(app);
 
-// Getting the commit hash
+    // Getting the commit hash
     const {stdout} = await $`git rev-parse HEAD`;
     const commitHash = stdout.trim();
 
-// Add hash to the version in the backend package json file.
+    // Add hash to the version in the backend package json file.
     const currentVersion = await readPackageJsonKey(BACKEND_PACKAGE_JSON,'version');
-    await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'version', `${currentVersion}.${commitHash}`);
+    restore = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'version', `${currentVersion}.${commitHash}`);
 
     echo`~~~ Cleaning up previous build files...`
     await Promise.allSettled([
@@ -35,7 +37,7 @@ try {
         await $`lerna run build --scope=${app}-frontend`
     }
 
-// Ensure the frontend build ends up in the backend build output folder.
+    // Ensure the frontend build ends up in the backend build output folder.
     const feInterval = setInterval(async () => {
         const frontendIsPresent = await fsExists(`${BACKEND_DIR}/.webpack/renderer/`)
         if (!frontendIsPresent) {
@@ -52,4 +54,6 @@ try {
 
  } catch (_) {
     // eh...
+} finally {
+    await restore();
 }
