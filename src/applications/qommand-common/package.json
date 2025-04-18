@@ -13,6 +13,7 @@
     "nanoid": "^5.0.9",
     "winston": "^3.17.0",
     "winston-transport": "^4.9.0",
-    "qommand-backend": "workspace:*"
+    "qommand-backend": "workspace:*",
+    "common-essentials": "workspace:*"
   }
 }
