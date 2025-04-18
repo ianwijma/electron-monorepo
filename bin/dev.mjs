@@ -25,7 +25,7 @@ for (const dir of APP_DIRS) {
 const BACKEND_PACKAGE_JSON = path.join(BACKEND_DIR, 'package.json');
 
 const currentProductName = await readPackageJsonKey(BACKEND_PACKAGE_JSON,'productName');
-// await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'productName', `${currentProductName}-dev`);
+await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'productName', `${currentProductName}-dev`);
 
 try {
     const {result} = concurrently(

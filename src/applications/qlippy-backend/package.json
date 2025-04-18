@@ -1,6 +1,6 @@
 {
   "name": "qlippy-backend",
-  "productName": "qlippy-dev",
+  "productName": "qlippy",
   "version": "0.0.25",
   "description": "Qlip that!",
   "main": ".webpack/main",
