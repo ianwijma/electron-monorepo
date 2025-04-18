@@ -1,16 +1,15 @@
 import "zx/globals"
 import concurrently from "concurrently";
-import {readPackageJsonKey, setupProject, writePackageJsonWithRestore} from './utils.mjs'
+import {readPackageJsonKey, safeRun, setupProject, writePackageJsonWithRestore} from './utils.mjs'
 
-let restore;
-
-try {
+await safeRun(async ({ addRevert }) => {
     const {app} = argv;
 
     const {BACKEND_DIR, FRONTEND_DIR, BACKEND_PACKAGE_JSON} = await setupProject(app);
 
     const currentProductName = await readPackageJsonKey(BACKEND_PACKAGE_JSON,'productName');
-    restore = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'productName', `${currentProductName}-dev`);
+    const revertProductName = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'productName', `${currentProductName}-dev`);
+    addRevert(revertProductName);
 
     try {
         const {result} = concurrently(
@@ -36,9 +35,4 @@ try {
     } catch (error) {
         console.error(error);
     }
-} catch (_) {
-    // eh...
-}
-finally {
-    await restore();
-}
+})

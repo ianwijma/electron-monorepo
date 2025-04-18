@@ -93,3 +93,48 @@ export const setupProject = async (app) => {
         BACKEND_PACKAGE_JSON, COMMON_PACKAGE_JSON, FRONTEND_PACKAGE_JSON
     }
 }
+
+/**
+ * @callback AddRevertCallback
+ * @return {void|Promise<void>}
+ */
+
+/**
+ * @callback AddRevert
+ * @param {AddRevertCallback} callback
+ * @return {void}
+ */
+
+/**
+ * @typedef AddRevertProps
+ * @type {object}
+ * @property {AddRevert} addRevert
+ * @returns {Promise<void>}
+ */
+
+/**
+ * @callback SafeFunction
+ * @param {AddRevertProps}
+ */
+
+/**
+ * @param functionToRunSafely {SafeFunction}
+ * @returns {Promise<void>}
+ */
+export const safeRun = async (functionToRunSafely) => {
+    const reverts = [];
+
+    /**
+     * @param callback {function}
+     * @returns {void}
+     */
+    const addRevert = (callback) => { reverts.push(callback) };
+
+    try {
+        await functionToRunSafely({ addRevert })
+    } finally {
+        for (const revert of reverts) {
+            await revert();
+        }
+    }
+}
