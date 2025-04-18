@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {BaseSettings} from "qommand-common/src/settings.types";
-import {SettingsName} from "qommand/src/settings/createSettings";
+import type {SettingsName} from "qommand-backend/src/settings/createSettings";
 import {eventHandler} from "../utils/eventHandler";
 import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'qommand-common/src/events/settingsUpdated.event'
 import {updateSettingsEventName, type UpdateSettingsEventData} from 'qommand-common/src/events/updateSettings.event'
