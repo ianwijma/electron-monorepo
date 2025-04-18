@@ -24,14 +24,19 @@ const config: ForgeConfig = {
         new MakerDeb({
             options: {
                 name: NAME,
+                productName: NAME,
                 description: DESCRIPTION,
                 maintainer: AUTHOR,
+                section: 'utils',
+                categories: ['Development', 'Utility']
             }
         }),
         new MakerRpm({
             options: {
                 name: NAME,
+                productName: NAME,
                 description: DESCRIPTION,
+                categories: ['Development', 'Utility']
             }
         }),
         new MakerSquirrel({
