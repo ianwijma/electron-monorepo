@@ -1,0 +1,13 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "qlippy": "node ./bin/dev.mjs --app=qlippy"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "lerna": "^8.2.2",
+    "zx": "^8.2.4"
+  }
+}

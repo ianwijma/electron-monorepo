@@ -1,0 +1,10 @@
+packages:
+  - src/packages/*
+  - src/applications/*
+
+onlyBuiltDependencies:
+  - electron
+  - electron-winstaller
+  - puppeteer
+  - sharp
+

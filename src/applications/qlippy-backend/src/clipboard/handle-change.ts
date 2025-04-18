@@ -1,0 +1,173 @@
+import {clipboardChangeEmitter} from "./change-emitter";
+import {
+    ClipboardItemHash,
+    ClipboardItemTypes,
+} from "qlippy-common/src/settings/clipboard.settings.types";
+import {
+    htmlToHtmlClipboardItem,
+    isTextAColour,
+    isTextAUrl,
+    nativeImageToImageClipboardItem,
+    textToColourClipboardItem,
+    textToPathClipboardItem,
+    textToTextClipboardItem,
+    textToUrlClipboardItem
+} from "./item-converters";
+import {clipboardManager} from "./manager";
+import { join as pathJoin } from 'node:path'
+import {fileExists, fileStats, UNSAFE_fileStats, writeFile} from "../utils/files";
+import {screenshotUrl} from "../utils/screenshotSite";
+import {sha1} from "../utils/crypto";
+import {nativeImage} from "electron";
+
+
+const CLIPBOARD_STORAGE_PATH = 'clipboard-files';
+
+const createClipboardHandleChange = () => {
+    const clipboardHashMap = new Map<ClipboardItemTypes, ClipboardItemHash>();
+    const updateHash = (name: ClipboardItemTypes, hash: ClipboardItemHash): void => {
+        clipboardHashMap.set(name, hash);
+    };
+    const isHashDifferent = (name: ClipboardItemTypes, hash: ClipboardItemHash): boolean => {
+        return clipboardHashMap.get(name) !== hash;
+    }
+
+    return {
+        initialize: async (): Promise<void> => {
+            clipboardChangeEmitter.onChange(async (data) => {
+                const {image, imageHash, isImageEmpty} = data;
+
+                // First we're getting the image, because HTML can contain the HTML version of an image.
+                if (!isImageEmpty && isHashDifferent('image', imageHash)) {
+                    updateHash('image', imageHash);
+
+                    const item = nativeImageToImageClipboardItem({ image, hash: imageHash });
+                    await clipboardManager.add(item);
+
+                    // If there is already an imageFilePath, we don't need to safe it again
+                    if (item.imageFilePath) {
+                        return; // is handled
+                    }
+
+                    // Save file & update the clipboard item.
+                    const filePath = pathJoin(CLIPBOARD_STORAGE_PATH, `${item.id}.png`);
+                    let fileStoragePath = await fileExists(filePath);
+                    if (fileStoragePath === false) {
+                        const imagePng = image.toPNG();
+                        item.imageFilePath = await writeFile(filePath, imagePng);
+                        await clipboardManager.update(item);
+
+                        // Get the image size
+                        const imageStats = await fileStats(filePath);
+                        if (imageStats !== false) {
+                            item.size = imageStats.size;
+                            await clipboardManager.update(item);
+                        }
+                    }
+
+                    return; // is handled
+                }
+
+                const {text, textHash, isTextEmpty} = data;
+
+                // We're getting the text, for colour checking, as some colours are copied from an IDE, which involves HTML, we need to first check for colours.
+                if (!isTextEmpty && isTextAColour(text) && isHashDifferent('colour', textHash)) {
+                    updateHash('colour', textHash);
+
+                    const item = textToColourClipboardItem({ text, hash: textHash });
+                    await clipboardManager.add(item);
+
+                    return; // is handled
+                }
+
+                // Text check we're checking if it contains a local path.
+                const stats = await UNSAFE_fileStats(text.trim());
+                if (!isTextEmpty && stats && isHashDifferent('path', textHash)) {
+                    updateHash('path', textHash);
+
+                    const item = textToPathClipboardItem({ text, stats, hash: textHash });
+                    await clipboardManager.add(item);
+
+                    return; // is handled
+                }
+
+                // Text check we're checking if it contains a valid URL.
+                const url = isTextAUrl(text.trim());
+                if (!isTextEmpty && url && !!url.hostname) {
+                    // Using the url.toString functionality to ensure a more stable URL string
+                    const urlHash = sha1(url.toString());
+                    if (isHashDifferent('url', urlHash)) {
+                        updateHash('url', urlHash);
+
+                        const item = textToUrlClipboardItem({ text, url, hash: urlHash });
+                        await clipboardManager.add(item);
+
+                        // If there is already an imageFilePath, we don't need to safe it again
+                        if (item.imageFilePath) {
+                            return; // is handled
+                        }
+
+                        // Screenshot the time and save it to the item
+                        const filePath = pathJoin(CLIPBOARD_STORAGE_PATH, `${item.id}.png`);
+                        let fileStoragePath = await fileExists(filePath);
+                        if (fileStoragePath === false) {
+                            // Screenshotting the URL
+                            item.screenshotStart = Date.now();
+                            const screenshotPng = await screenshotUrl.screenshot({ url, type: 'png' });
+                            item.screenshotEnd = Date.now();
+
+                            // Saving the screenshot start and end times.
+                            await clipboardManager.update(item);
+
+                            // Writing the file to disc
+                            item.imageFilePath = await writeFile(filePath, screenshotPng);
+
+                            // Extracting the screenshot information.
+                            const screenshot = nativeImage.createFromBuffer(screenshotPng);
+                            const screenshotSize = screenshot.getSize();
+                            item.screenshotWidth = screenshotSize.width;
+                            item.screenshotHeight = screenshotSize.height;
+
+                            await clipboardManager.update(item);
+
+                            // Get the screenshot size
+                            const imageStats = await fileStats(filePath);
+                            if (imageStats !== false) {
+                                item.size = imageStats.size;
+                                await clipboardManager.update(item);
+                            }
+                        }
+
+                        return; // is handled
+                    }
+                }
+
+                const { html, htmlHash, isHtmlEmpty } = data;
+
+                // We're getting the HTML, as HTML also contains the text in the HTML.
+                if (!isHtmlEmpty && isHashDifferent('html', htmlHash)) {
+                    updateHash('html', htmlHash);
+
+                    const item = htmlToHtmlClipboardItem({ html, htmlText: text, hash: htmlHash });
+                    await clipboardManager.add(item);
+
+                    return; // is handled
+                }
+
+                // Text check we're checking if is not empty.
+                if (!isTextEmpty && isHashDifferent('text', textHash)) {
+                    updateHash('text', textHash);
+
+                    const item = textToTextClipboardItem({ text, hash: textHash });
+                    await clipboardManager.add(item);
+
+                    return; // is handled
+                }
+
+                console.log('[clipboard-change-listener] Unknown clipboard change.')
+            })
+        }
+    }
+}
+
+export const clipboardHandleChange = createClipboardHandleChange()
