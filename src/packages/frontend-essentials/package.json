@@ -1,0 +1,9 @@
+{
+  "name": "frontend-essentials",
+  "exports": {
+    ".": "./src"
+  },
+  "dependencies": {
+    "common-essentials": "workspace:*"
+  }
+}

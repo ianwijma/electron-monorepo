@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "dayjs": "^1.11.13",
-    "nanoid": "^5.0.9"
+    "nanoid": "^5.0.9",
+    "common-essentials": "workspace:*"
   }
 }

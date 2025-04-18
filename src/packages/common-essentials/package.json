@@ -1,0 +1,6 @@
+{
+  "name": "common-essentials",
+  "exports": {
+    ".": "./src"
+  }
+}
