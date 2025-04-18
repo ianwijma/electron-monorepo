@@ -8,8 +8,8 @@ await safeRun(async ({ addRevert }) => {
     const {BACKEND_DIR, FRONTEND_DIR, BACKEND_PACKAGE_JSON} = await setupProject(app);
 
     const currentProductName = await readPackageJsonKey(BACKEND_PACKAGE_JSON,'productName');
-    const revertProductName = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'productName', `${currentProductName}-dev`);
-    addRevert(revertProductName);
+    const restoreProductName = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'productName', `${currentProductName}-dev`);
+    addRevert(restoreProductName);
 
     try {
         const {result} = concurrently(

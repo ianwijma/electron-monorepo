@@ -1,14 +1,12 @@
 import 'zx/globals'
 import {
     fsExists,
-    readPackageJsonKey,
+    readPackageJsonKey, safeRun,
     setupProject,
     writePackageJsonWithRestore
 } from "./utils.mjs";
 
-let restore;
-
-try {
+await safeRun(async ({ addRevert }) => {
     const {app, quick} = argv;
 
     const {BACKEND_DIR, FRONTEND_DIR, BACKEND_PACKAGE_JSON} = await setupProject(app);
@@ -19,7 +17,8 @@ try {
 
     // Add hash to the version in the backend package json file.
     const currentVersion = await readPackageJsonKey(BACKEND_PACKAGE_JSON,'version');
-    restore = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'version', `${currentVersion}.${commitHash}`);
+    const restoreVersion = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'version', `${currentVersion}.${commitHash}`);
+    addRevert(restoreVersion);
 
     echo`~~~ Cleaning up previous build files...`
     await Promise.allSettled([
@@ -51,9 +50,4 @@ try {
     await $`lerna run build --scope=${app}-backend`;
 
     clearInterval(feInterval);
-
- } catch (_) {
-    // eh...
-} finally {
-    await restore();
-}
+})
