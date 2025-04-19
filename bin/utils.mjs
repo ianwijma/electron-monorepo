@@ -34,7 +34,7 @@ export const writePackageJson = async (packageJsonPath, key, value) => {
         delete packageJson[key];
     }
 
-    $.fs.writeJson(packageJsonPath, packageJson, {spaces: 2});
+    await $.fs.writeJson(packageJsonPath, packageJson, {spaces: 2});
 }
 
 /**
@@ -86,7 +86,12 @@ export const setupProject = async (app) => {
 
     const BACKEND_PACKAGE_JSON = path.join(BACKEND_DIR, 'package.json');
     const COMMON_PACKAGE_JSON = path.join(COMMON_DIR, 'package.json');
+    const COMMON_VERSION_JSON = path.join(COMMON_DIR, 'version.json');
     const FRONTEND_PACKAGE_JSON = path.join(FRONTEND_DIR, 'package.json');
+
+    // Write to the version.json file in the common directory.
+    const version = await readPackageJsonKey(BACKEND_PACKAGE_JSON, 'version');
+    await $.fs.writeJson(COMMON_VERSION_JSON, { version }, {spaces: 2});
 
     return {
         PROJECT_ROOT,

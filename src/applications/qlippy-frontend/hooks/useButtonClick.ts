@@ -5,7 +5,7 @@ import {
     buttonClickedEventName,
     type ButtonClickedEventData
 } from 'qlippy-common/src/events/buttonClicked.event'
-import {eventHandler} from "../utils/eventHandler";
+import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
 
 export const useButtonClick = () => {
     const searchParams = useSearchParams();

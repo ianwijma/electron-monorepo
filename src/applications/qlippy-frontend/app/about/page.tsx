@@ -1,7 +1,7 @@
 'use client';
 
 import {DefaultWindowContainer} from "../../components/windowContainer/DefaultWindowContainer";
-import {version} from 'qlippy-backend/package.json'; // The only allowed Backend import EVER.
+import {version} from 'qlippy-common/version.json'; // The only allowed Backend import EVER.
 
 
 export default function AboutPage() {

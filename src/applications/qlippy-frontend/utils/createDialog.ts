@@ -1,5 +1,5 @@
 import {createOpenDialog} from 'qlippy-common/src/dialog'
-import {responseHandler} from "./responseHandler";
+import {responseHandler} from "frontend-essentials/src/utilities/responseHandler";
 
 // @ts-expect-error - We expect some error here, IDK why but TS is unhappy. Will check it out later, maybe, probably not...
 export const createDialog = createOpenDialog(responseHandler);

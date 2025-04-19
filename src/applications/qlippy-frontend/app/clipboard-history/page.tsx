@@ -12,7 +12,6 @@ import {
     ClipboardItemTypes,
     ClipboardSettings
 } from "qlippy-common/src/settings/clipboard.settings.types";
-import {eventHandler} from "../../utils/eventHandler";
 import {
     RestoreClipboardHistoryEventData,
     restoreClipboardHistoryEventName
@@ -34,6 +33,7 @@ import {useWindowControls} from "../../hooks/useWindowControls";
 import {toHumanDateAgo} from 'common-essentials/src/utilities/date'
 import {ClipboardMenu} from "./clipboard-menu";
 import {DefaultWindowContainer} from "../../components/windowContainer/DefaultWindowContainer";
+import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
 
 export type SearchableHistory = {
     id: ClipboardId,

@@ -1,4 +1,4 @@
-import {responseHandler} from "../utils/responseHandler";
+import {responseHandler} from "frontend-essentials/src/utilities/responseHandler";
 import {useState} from "react";
 import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 import type {RequestResponseOptions} from 'common-essentials/src/utilities/createResponseHandler';

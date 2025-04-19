@@ -1,4 +1,4 @@
-import {eventHandler} from "../utils/eventHandler";
+import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
 import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 import {useEffect} from "react";
 
