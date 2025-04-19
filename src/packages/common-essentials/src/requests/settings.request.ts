@@ -1,4 +1,4 @@
-import {BaseSettings} from "common-essentials/src/types/settings.types";
+import {BaseSettings} from "../types/settings.types";
 
 export const settingsRequestName = 'settingsRequest';
 

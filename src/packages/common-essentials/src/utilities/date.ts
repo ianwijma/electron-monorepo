@@ -1,3 +1,4 @@
+// @ts-ignore
 import dayjs, {Dayjs} from 'dayjs'
 
 export const toHumanDateAgo = (dateTimestamp: number): string => {

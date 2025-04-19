@@ -1,6 +1,7 @@
 {
   "name": "common-essentials",
   "dependencies": {
-    "nanoid": "^5.0.9"
+    "nanoid": "^5.0.9",
+    "dayjs": "^1.11.13"
   }
 }

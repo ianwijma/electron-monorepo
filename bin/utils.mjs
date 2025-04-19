@@ -28,6 +28,7 @@ export const readPackageJsonKey = async (packageJsonPath, key) => {
 export const writePackageJson = async (packageJsonPath, key, value) => {
     const packageJson = await $.fs.readJSON(packageJsonPath);
 
+    // If this bites us in the back, let @ianwijma know...
     if (!!value) {
         packageJson[key] = value;
     } else {
