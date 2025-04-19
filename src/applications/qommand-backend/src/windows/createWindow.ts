@@ -1,4 +1,4 @@
-import {app, BrowserWindow, screen, shell} from "electron";
+import {app, BrowserWindow, screen} from "electron";
 import path from "path";
 import {isDev} from "../utils/isDev";
 import {startupArguments} from "../utils/startupArguments";
