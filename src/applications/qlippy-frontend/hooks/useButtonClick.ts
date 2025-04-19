@@ -1,5 +1,5 @@
 import {useSearchParams} from "next/navigation";
-import {SimpleEventBusData} from "qlippy-common/src/eventbus.types";
+import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 import {useListen} from "./useEventHandler";
 import {
     buttonClickedEventName,

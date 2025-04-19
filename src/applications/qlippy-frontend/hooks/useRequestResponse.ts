@@ -1,6 +1,6 @@
 import {responseHandler} from "../utils/responseHandler";
 import {useState} from "react";
-import {SimpleEventBusData} from "qlippy-common/src/eventbus.types";
+import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 import {RequestResponseOptions} from "qlippy-common/src/createResponseHandler";
 
 export const useRequestResponse = <REQ extends SimpleEventBusData, RES extends SimpleEventBusData = SimpleEventBusData>(requestName: string, requestData: REQ, options?: RequestResponseOptions) => {

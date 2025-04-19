@@ -1,6 +1,6 @@
 {
   "name": "qlippy-backend",
-  "productName": "qlippy",
+  "productName": "qlippy-dev",
   "version": "0.0.26",
   "description": "Qlip that!",
   "main": ".webpack/main",
@@ -56,6 +56,7 @@
     "puppeteer": "^24.3.0",
     "yaml": "^1.10.2",
     "yargs-parser": "^21.1.1",
-    "backend-essentials": "workspace:*"
+    "backend-essentials": "workspace:*",
+    "common-essentials": "workspace:*"
   }
 }

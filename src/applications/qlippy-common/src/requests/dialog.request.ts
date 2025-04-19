@@ -1,4 +1,4 @@
-import {SimpleEventBusData} from "../eventbus.types";
+import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 
 export const dialogRequestName = 'dialogRequest';
 

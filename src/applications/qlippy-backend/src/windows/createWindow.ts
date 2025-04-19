@@ -5,7 +5,7 @@ import {eventBus} from "../utils/eventBus";
 import {eventHandler} from "../utils/eventHandler";
 import {closeWindowEventName, type CloseWindowEventData} from 'qlippy-common/src/events/closeWindow.event';
 import {minimizeWindowEventName, type MinimizeWindowEventData} from 'qlippy-common/src/events/minimizeWindow.event';
-import {StopListening} from "qlippy-common/src/eventbus.types";
+import {StopListening} from "common-essentials/src/types/eventbus.types";
 import {sleep} from "../utils/sleep";
 import {isDebug} from "../utils/isDebug";
 

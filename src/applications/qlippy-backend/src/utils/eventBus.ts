@@ -1,4 +1,4 @@
-import {SimpleEventBusData, SimpleEventBus} from "qlippy-common/src/eventbus.types";
+import {SimpleEventBusData, SimpleEventBus} from "common-essentials/src/types/eventbus.types";
 import EventEmitter from 'node:events'
 
 const bus = new EventEmitter();

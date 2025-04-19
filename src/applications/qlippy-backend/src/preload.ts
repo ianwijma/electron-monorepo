@@ -3,7 +3,7 @@ import IpcRendererEvent = Electron.IpcRendererEvent;
 // Needs to be required for some reason?
 const {contextBridge, ipcRenderer, webUtils} = require('electron/renderer');
 
-import {SimpleEventBusData, SimpleEventBus} from "qlippy-common/src/eventbus.types";
+import {SimpleEventBusData, SimpleEventBus} from "common-essentials/src/types/eventbus.types";
 
 /**
  * This file provides generic functionality to all the windows.

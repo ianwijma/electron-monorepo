@@ -16,6 +16,7 @@
     "qlippy-common": "workspace:*",
     "qlippy-backend": "workspace:*",
     "frontend-essentials": "workspace:*",
+    "common-essentials": "workspace:*",
     "nanoid": "^5.0.9",
     "next": "15.1.0",
     "react": "^19.0.0",

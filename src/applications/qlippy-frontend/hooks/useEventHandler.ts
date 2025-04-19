@@ -1,5 +1,5 @@
 import {eventHandler} from "../utils/eventHandler";
-import {SimpleEventBusData} from "qlippy-common/src/eventbus.types";
+import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 import {useEffect} from "react";
 
 const {listen, listenOnce} = eventHandler;

@@ -1,6 +1,6 @@
-import {SimpleEventBusData} from "./eventbus.types";
 import {dialogRequestName, DialogRequestRes, DialogRequestReq} from './requests/dialog.request';
 import {ResponseHandler} from "./createResponseHandler";
+import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 
 type OpenInputDialogOptions = {
     type: 'input';

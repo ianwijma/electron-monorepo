@@ -1,4 +1,4 @@
-import {SimpleEventBus} from "qlippy-common/src/eventbus.types";
+import {SimpleEventBus} from "common-essentials/src/types/eventbus.types";
 import {createEventHandler} from 'qlippy-common/src/createEventHandler'
 import {isClient} from "./isClient";
 

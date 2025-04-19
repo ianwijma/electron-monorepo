@@ -26,6 +26,9 @@ importers:
       backend-essentials:
         specifier: workspace:*
         version: link:../../packages/backend-essentials
+      common-essentials:
+        specifier: workspace:*
+        version: link:../../packages/common-essentials
       electron-squirrel-startup:
         specifier: ^1.0.1
         version: 1.0.1
@@ -172,6 +175,9 @@ importers:
       '@next/env':
         specifier: ^15.1.3
         version: 15.3.1
+      common-essentials:
+        specifier: workspace:*
+        version: link:../../packages/common-essentials
       frontend-essentials:
         specifier: workspace:*
         version: link:../../packages/frontend-essentials

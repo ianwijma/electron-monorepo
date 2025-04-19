@@ -1,6 +1,6 @@
-import {SimpleEventBus, SimpleEventBusData} from "./eventbus.types";
-
 // EventHandlers are a wrapper around the eventbus, but allowing you to emit and listen to specific events.
+import {SimpleEventBus, SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
+
 type StopListening = () => void;
 
 export type EventHandler = {

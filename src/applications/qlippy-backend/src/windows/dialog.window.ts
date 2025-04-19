@@ -7,7 +7,7 @@ import {
 import {responseHandler} from "../utils/responseHandler";
 import {dialogRequestName, DialogRequestRes, DialogRequestReq} from 'qlippy-common/src/requests/dialog.request';
 import {OpenDialogOptions} from 'qlippy-common/src/dialog'
-import {SimpleEventBusData} from "qlippy-common/src/eventbus.types";
+import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 import {eventHandler} from "../utils/eventHandler";
 
 type CreateDialogParams = {
