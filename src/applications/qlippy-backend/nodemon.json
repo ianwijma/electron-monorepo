@@ -1,7 +1,8 @@
 {
   "watch": [
     "src",
-    "../qlippy-common/src"
+    "./node_modules/qlippy-common",
+    "./node_modules/common-essentials"
   ],
   "ext": "ts",
   "delay": 500,

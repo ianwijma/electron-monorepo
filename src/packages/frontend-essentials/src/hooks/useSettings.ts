@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {BaseSettings} from "common-essentials/src/types/settings.types";
-import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
 import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'common-essentials/src/events/settingsUpdated.event'
 import {updateSettingsEventName, type UpdateSettingsEventData} from 'common-essentials/src/events/updateSettings.event'
 import {
@@ -8,8 +7,9 @@ import {
     type SettingsRequestReq,
     type SettingsRequestRes
 } from 'common-essentials/src/requests/settings.request'
-import {responseHandler} from "frontend-essentials/src/utilities/responseHandler";
 import {useListen} from "./useEventHandler";
+import {responseHandler} from "../utilities/responseHandler";
+import {eventHandler} from "../utilities/eventHandler";
 
 export const useSettings = <T extends BaseSettings>(settingsName: string) => {
     const [settings, setSettings] = useState<T>(null);

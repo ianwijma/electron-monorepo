@@ -1,4 +1,4 @@
-import {app, BrowserWindow, screen} from "electron";
+import {app, BrowserWindow, screen, shell} from "electron";
 import path from "path";
 import {isDev} from "./isDev";
 import {eventBus} from "./eventBus";
@@ -305,6 +305,12 @@ export const createWindow = ({
             webPreferences: {
                 preload: path.join(__dirname, 'preload.js'),
             },
+        })
+
+        window.webContents.setWindowOpenHandler((details) => {
+            shell.openExternal(details.url); // Open URL in user's browser.
+
+            return { action: "deny" }; // Prevent the app from opening the URL.
         })
 
         loadWindowPromise = loadWindow({urlParams: defaultUrlParams});

@@ -4,7 +4,7 @@ import {ClipboardQuery} from "./clipboard-query";
 import {ClipboardList} from "./clipboard-list";
 import {ClipboardDetails} from "./clipboard-details";
 import {useCallback, useMemo, useRef, useState} from "react";
-import {useSettings} from "../../hooks/useSettings";
+import {useSettings} from "frontend-essentials/src/hooks/useSettings";
 import {
     ClipboardHistory,
     ClipboardId,
@@ -29,11 +29,12 @@ import {
     RestoreImageClipboardHistoryEventData,
     restoreImageClipboardHistoryEventName
 } from 'qlippy-common/src/events/restoreImageClipboardHistory.event'
-import {useWindowControls} from "../../hooks/useWindowControls";
+import {useWindowControls} from "frontend-essentials/src/hooks/useWindowControls";
 import {toHumanDateAgo} from 'common-essentials/src/utilities/date'
 import {ClipboardMenu} from "./clipboard-menu";
 import {DefaultWindowContainer} from "../../components/windowContainer/DefaultWindowContainer";
 import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
+
 
 export type SearchableHistory = {
     id: ClipboardId,

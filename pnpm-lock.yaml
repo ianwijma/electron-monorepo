@@ -120,12 +120,6 @@ importers:
       common-essentials:
         specifier: workspace:*
         version: link:../../packages/common-essentials
-      dayjs:
-        specifier: ^1.11.13
-        version: 1.11.13
-      nanoid:
-        specifier: ^5.0.9
-        version: 5.1.5
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.2.0
@@ -453,6 +447,9 @@ importers:
 
   src/packages/common-essentials:
     dependencies:
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       nanoid:
         specifier: ^5.0.9
         version: 5.1.5
@@ -462,6 +459,12 @@ importers:
       common-essentials:
         specifier: workspace:*
         version: link:../common-essentials
+      next:
+        specifier: 15.1.0
+        version: 15.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react:
+        specifier: ^19.0.0
+        version: 19.1.0
 
 packages:
 

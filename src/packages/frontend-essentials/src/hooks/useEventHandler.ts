@@ -1,6 +1,6 @@
-import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
 import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 import {useEffect} from "react";
+import {eventHandler} from "../utilities/eventHandler";
 
 const {listen, listenOnce} = eventHandler;
 

@@ -1,7 +1,7 @@
-import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
 import {closeWindowEventName, type CloseWindowEventData} from 'common-essentials/src/events/closeWindow.event'
 import {minimizeWindowEventName, type MinimizeWindowEventData} from 'common-essentials/src/events/minimizeWindow.event'
 import {useSearchParams} from "next/navigation";
+import {eventHandler} from "../utilities/eventHandler";
 
 export const useWindowControls = () => {
     const searchParams = useSearchParams()
