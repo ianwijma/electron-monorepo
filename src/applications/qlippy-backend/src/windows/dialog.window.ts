@@ -1,5 +1,5 @@
 import {createWindow} from "./createWindow";
-import {AnyObject, stringifyObject} from 'qlippy-common/src/object'
+import {AnyObject, stringifyObject} from 'common-essentials/src/utilities/object'
 import {
     type ButtonClickedEventData,
     buttonClickedEventName,

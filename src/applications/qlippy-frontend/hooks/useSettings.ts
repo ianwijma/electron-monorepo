@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {BaseSettings} from "qlippy-common/src/settings.types";
+import {BaseSettings} from "common-essentials/src/types/settings.types";
 import type {SettingsName} from "qlippy-backend/src/settings/createSettings";
 import {eventHandler} from "../utils/eventHandler";
 import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'qlippy-common/src/events/settingsUpdated.event'

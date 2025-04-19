@@ -1,5 +1,5 @@
 import {fileExists, readYamlFile, writeYamlFile} from "../utils/files";
-import {BaseSettings, SettingsVersion} from "qlippy-common/src/settings.types";
+import {BaseSettings, SettingsVersion} from "common-essentials/src/types/settings.types";
 import {responseHandler} from "../utils/responseHandler";
 import {eventHandler} from "../utils/eventHandler";
 import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'qlippy-common/src/events/settingsUpdated.event'

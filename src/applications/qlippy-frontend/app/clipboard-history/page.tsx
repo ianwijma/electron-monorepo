@@ -31,7 +31,7 @@ import {
     restoreImageClipboardHistoryEventName
 } from 'qlippy-common/src/events/restoreImageClipboardHistory.event'
 import {useWindowControls} from "../../hooks/useWindowControls";
-import {toHumanDateAgo} from 'qlippy-common/src/date'
+import {toHumanDateAgo} from 'common-essentials/src/utilities/date'
 import {ClipboardMenu} from "./clipboard-menu";
 import {DefaultWindowContainer} from "../../components/windowContainer/DefaultWindowContainer";
 

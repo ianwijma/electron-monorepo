@@ -1,4 +1,4 @@
-import {BaseSettings} from "../settings.types";
+import {BaseSettings} from "common-essentials/src/types/settings.types";
 
 export type KeyboardShortcut = string;
 export type KeyboardActionTarget = 'window';
