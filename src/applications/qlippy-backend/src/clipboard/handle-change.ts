@@ -15,9 +15,9 @@ import {
 } from "./item-converters";
 import {clipboardManager} from "./manager";
 import { join as pathJoin } from 'node:path'
-import {fileExists, fileStats, UNSAFE_fileStats, writeFile} from "../utils/files";
+import {fileExists, fileStats, UNSAFE_fileStats, writeFile} from "backend-essentials/src/utilities/files";
 import {screenshotUrl} from "../utils/screenshotSite";
-import {sha1} from "../utils/crypto";
+import {sha1} from "backend-essentials/src/utilities/crypto";
 import {nativeImage} from "electron";
 
 

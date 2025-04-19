@@ -1,9 +1,9 @@
 import {keyboardSettings} from "../settings/keyboard.setting";
-import {settingsUpdatedEventName, SettingsUpdatedEventData} from 'qlippy-common/src/events/settingsUpdated.event'
+import {settingsUpdatedEventName, SettingsUpdatedEventData} from 'common-essentials/src/events/settingsUpdated.event'
 import {KeyboardAction, KeyboardSettings} from "qlippy-common/src/settings/keyboard.settings.types";
 import {globalShortcut} from 'electron'
-import {eventHandler} from "./eventHandler";
 import {clipboardHistoryWindow} from "../windows/clipboard-history.window";
+import {eventHandler} from "backend-essentials/src/utilities/eventHandler";
 
 export type KeyboardShortcuts = {
     initialize: () => Promise<void>,

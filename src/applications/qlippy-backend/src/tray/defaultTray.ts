@@ -1,5 +1,5 @@
 import {app, Menu, nativeImage, Tray, MenuItemConstructorOptions} from "electron";
-import {isDev} from "../utils/isDev";
+import {isDev} from "backend-essentials/src/utilities/isDev";
 import {resetAllSettings} from "../utils/resetAllSettings";
 import {defaultLogo} from 'qlippy-common/src/logos'
 import {aboutWindow} from "../windows/about.window";

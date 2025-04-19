@@ -1,4 +1,4 @@
-import {createWindow} from "./createWindow";
+import {createWindow} from "backend-essentials/src/utilities/createWindow";
 
 export const aboutWindow = createWindow({
     title: 'About Qlippy',

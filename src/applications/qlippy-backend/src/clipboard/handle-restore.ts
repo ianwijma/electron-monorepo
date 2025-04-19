@@ -1,4 +1,3 @@
-import {eventHandler} from "../utils/eventHandler";
 import {
     restoreClipboardHistoryEventName, RestoreClipboardHistoryEventData
 } from "qlippy-common/src/events/restoreClipboardHistory.event";
@@ -6,6 +5,7 @@ import {
     restoreImageClipboardHistoryEventName, RestoreImageClipboardHistoryEventData
 } from "qlippy-common/src/events/restoreImageClipboardHistory.event";
 import {clipboardManager} from "./manager";
+import {eventHandler} from "backend-essentials/src/utilities/eventHandler";
 
 const createClipboardHandleRestore = () => {
     return {

@@ -1,16 +1,16 @@
-import {fileExists, readYamlFile, writeYamlFile} from "../utils/files";
+import {fileExists, readYamlFile, writeYamlFile} from "./files";
 import {BaseSettings, SettingsVersion} from "common-essentials/src/types/settings.types";
-import {responseHandler} from "../utils/responseHandler";
-import {eventHandler} from "../utils/eventHandler";
-import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'qlippy-common/src/events/settingsUpdated.event'
-import {updateSettingsEventName, type UpdateSettingsEventData} from 'qlippy-common/src/events/updateSettings.event'
+import {responseHandler} from "./responseHandler";
+import {eventHandler} from "./eventHandler";
+import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'common-essentials/src/events/settingsUpdated.event'
+import {updateSettingsEventName, type UpdateSettingsEventData} from 'common-essentials/src/events/updateSettings.event'
 import {
     settingsRequestName,
     type SettingsRequestReq,
     type SettingsRequestRes
-} from 'qlippy-common/src/requests/settings.request'
+} from 'common-essentials/src/requests/settings.request'
 import diff from 'git-diff'
-import {isDebug} from "../utils/isDebug";
+import {isDebug} from "./isDebug";
 
 export type SettingsName = string;
 

@@ -1,6 +1,6 @@
 import {eventHandler} from "../utils/eventHandler";
-import {closeWindowEventName, type CloseWindowEventData} from 'qlippy-common/src/events/closeWindow.event'
-import {minimizeWindowEventName, type MinimizeWindowEventData} from 'qlippy-common/src/events/minimizeWindow.event'
+import {closeWindowEventName, type CloseWindowEventData} from 'common-essentials/src/events/closeWindow.event'
+import {minimizeWindowEventName, type MinimizeWindowEventData} from 'common-essentials/src/events/minimizeWindow.event'
 import {useSearchParams} from "next/navigation";
 
 export const useWindowControls = () => {

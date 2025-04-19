@@ -1,9 +1,9 @@
-import {eventHandler} from "../utils/eventHandler";
 import {confirmDialog} from "../windows/dialog.window";
 import {
     clearClipboardHistoryEventName, ClearClipboardHistoryEventData
 } from "qlippy-common/src/events/clearClipboardHistory.event";
 import {clipboardManager} from "./manager";
+import {eventHandler} from "backend-essentials/src/utilities/eventHandler";
 
 const createClipboardHandleClear = () => {
     return {

@@ -1,9 +1,9 @@
-import {eventHandler} from "../utils/eventHandler";
 import {
     openClipboardHistoryEventName, OpenClipboardHistoryEventData
 } from "qlippy-common/src/events/openClipboardHistory.event";
 import {clipboardManager} from "./manager";
 import {shell} from 'electron'
+import {eventHandler} from "backend-essentials/src/utilities/eventHandler";
 
 const createClipboardHandleOpen = () => {
     return {

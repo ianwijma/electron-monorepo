@@ -1,5 +1,5 @@
 import {protocol} from 'electron'
-import {ensureSafeFilePath, readFile} from "./files";
+import {ensureSafeFilePath, readFile} from "backend-essentials/src/utilities/files";
 
 export const fileProtocol = (() => {
     const protocolName = "app";

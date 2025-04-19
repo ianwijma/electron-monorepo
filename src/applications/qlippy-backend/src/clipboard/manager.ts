@@ -3,7 +3,7 @@ import {
     ClipboardItem,
 } from 'qlippy-common/src/settings/clipboard.settings.types'
 import {clipboardSettings} from "../settings/clipboard.setting";
-import {readFile, removeFile} from "../utils/files";
+import {readFile, removeFile} from "backend-essentials/src/utilities/files";
 import {clipboard, nativeImage} from "electron";
 
 const CLIPBOARD_AMOUNT_LIMIT = 10_000;

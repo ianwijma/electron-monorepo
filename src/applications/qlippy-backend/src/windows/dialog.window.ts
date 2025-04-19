@@ -1,14 +1,14 @@
-import {createWindow} from "./createWindow";
+import {createWindow} from "backend-essentials/src/utilities/createWindow";
 import {AnyObject, stringifyObject} from 'common-essentials/src/utilities/object'
 import {
     type ButtonClickedEventData,
     buttonClickedEventName,
 } from 'qlippy-common/src/events/buttonClicked.event'
-import {responseHandler} from "../utils/responseHandler";
+import {responseHandler} from "backend-essentials/src/utilities/responseHandler";
 import {dialogRequestName, DialogRequestRes, DialogRequestReq} from 'qlippy-common/src/requests/dialog.request';
 import {OpenDialogOptions} from 'qlippy-common/src/dialog'
 import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
-import {eventHandler} from "../utils/eventHandler";
+import {eventHandler} from "backend-essentials/src/utilities/eventHandler";
 
 type CreateDialogParams = {
     title: string;

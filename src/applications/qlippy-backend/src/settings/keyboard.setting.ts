@@ -1,7 +1,7 @@
-import {createSettings} from "./createSettings";
 import {KeyboardSettings} from "qlippy-common/src/settings/keyboard.settings.types";
-import {isMac} from "../utils/isMac";
-import {isDev} from "../utils/isDev";
+import {isMac} from "backend-essentials/src/utilities/isMac";
+import {isDev} from "backend-essentials/src/utilities/isDev";
+import {createSettings} from "backend-essentials/src/utilities/createSettings";
 
 const DEFAULT_CLIPBOARD_KEYS = [
     'Control',

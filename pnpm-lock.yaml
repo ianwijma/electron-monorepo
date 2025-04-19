@@ -20,9 +20,6 @@ importers:
 
   src/applications/qlippy-backend:
     dependencies:
-      '@types/git-diff':
-        specifier: ^2.0.7
-        version: 2.0.7
       backend-essentials:
         specifier: workspace:*
         version: link:../../packages/backend-essentials
@@ -32,9 +29,6 @@ importers:
       electron-squirrel-startup:
         specifier: ^1.0.1
         version: 1.0.1
-      git-diff:
-        specifier: ^2.0.6
-        version: 2.0.6
       nanoid:
         specifier: ^5.0.9
         version: 5.1.5
@@ -44,12 +38,6 @@ importers:
       qlippy-common:
         specifier: workspace:*
         version: link:../qlippy-common
-      yaml:
-        specifier: ^1.10.2
-        version: 1.10.2
-      yargs-parser:
-        specifier: ^21.1.1
-        version: 21.1.1
     devDependencies:
       '@electron-forge/cli':
         specifier: ^7.6.1
@@ -84,9 +72,6 @@ importers:
       '@types/electron-squirrel-startup':
         specifier: ^1.0.2
         version: 1.0.2
-      '@types/yargs-parser':
-        specifier: ^21.0.3
-        version: 21.0.3
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.62.0
         version: 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.5.5))(eslint@8.57.1)(typescript@4.5.5)
@@ -175,6 +160,9 @@ importers:
       '@next/env':
         specifier: ^15.1.3
         version: 15.3.1
+      backend-essentials:
+        specifier: workspace:*
+        version: link:../../packages/backend-essentials
       common-essentials:
         specifier: workspace:*
         version: link:../../packages/common-essentials
@@ -449,6 +437,25 @@ importers:
       common-essentials:
         specifier: workspace:*
         version: link:../common-essentials
+      git-diff:
+        specifier: ^2.0.6
+        version: 2.0.6
+      yaml:
+        specifier: ^1.10.2
+        version: 1.10.2
+      yargs-parser:
+        specifier: ^21.1.1
+        version: 21.1.1
+    devDependencies:
+      '@types/git-diff':
+        specifier: ^2.0.7
+        version: 2.0.7
+      '@types/yargs-parser':
+        specifier: ^21.0.3
+        version: 21.0.3
+      electron:
+        specifier: 34.1.0
+        version: 34.1.0
 
   src/packages/common-essentials:
     dependencies:

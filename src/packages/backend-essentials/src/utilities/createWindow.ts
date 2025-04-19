@@ -1,13 +1,13 @@
 import {app, BrowserWindow, screen} from "electron";
 import path from "path";
-import {isDev} from "../utils/isDev";
-import {eventBus} from "../utils/eventBus";
-import {eventHandler} from "../utils/eventHandler";
-import {closeWindowEventName, type CloseWindowEventData} from 'qlippy-common/src/events/closeWindow.event';
-import {minimizeWindowEventName, type MinimizeWindowEventData} from 'qlippy-common/src/events/minimizeWindow.event';
+import {isDev} from "./isDev";
+import {eventBus} from "./eventBus";
+import {eventHandler} from "./eventHandler";
+import {closeWindowEventName, type CloseWindowEventData} from 'common-essentials/src/events/closeWindow.event';
+import {minimizeWindowEventName, type MinimizeWindowEventData} from 'common-essentials/src/events/minimizeWindow.event';
 import {StopListening} from "common-essentials/src/types/eventbus.types";
-import {sleep} from "../utils/sleep";
-import {isDebug} from "../utils/isDebug";
+import {sleep} from "./sleep";
+import {isDebug} from "./isDebug";
 
 type UrlParams = Record<string, string>;
 

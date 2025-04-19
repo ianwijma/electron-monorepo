@@ -1,7 +1,7 @@
 import EventEmitter from "node:events";
 import {clipboard, NativeImage} from 'electron'
-import {sleep} from "../utils/sleep";
-import {sha1} from "../utils/crypto";
+import {sleep} from "backend-essentials/src/utilities/sleep";
+import {sha1} from "backend-essentials/src/utilities/crypto";
 
 const CLIPBOARD_CHECK_INTERVAL_MS = 250;
 

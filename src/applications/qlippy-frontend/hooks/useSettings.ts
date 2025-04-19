@@ -1,16 +1,16 @@
 import {useEffect, useState} from "react";
 import {BaseSettings} from "common-essentials/src/types/settings.types";
-import type {SettingsName} from "qlippy-backend/src/settings/createSettings";
 import {eventHandler} from "../utils/eventHandler";
-import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'qlippy-common/src/events/settingsUpdated.event'
-import {updateSettingsEventName, type UpdateSettingsEventData} from 'qlippy-common/src/events/updateSettings.event'
+import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'common-essentials/src/events/settingsUpdated.event'
+import {updateSettingsEventName, type UpdateSettingsEventData} from 'common-essentials/src/events/updateSettings.event'
 import {
     settingsRequestName,
     type SettingsRequestReq,
     type SettingsRequestRes
-} from 'qlippy-common/src/requests/settings.request'
+} from 'common-essentials/src/requests/settings.request'
 import {responseHandler} from "../utils/responseHandler";
 import {useListen} from "./useEventHandler";
+import type {SettingsName} from "backend-essentials/src/utilities/createSettings";
 
 export const useSettings = <T extends BaseSettings>(settingsName: SettingsName) => {
     const [settings, setSettings] = useState<T>(null);

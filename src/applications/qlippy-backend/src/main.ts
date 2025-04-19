@@ -1,8 +1,8 @@
 import {app} from 'electron';
 import started from 'electron-squirrel-startup';
 import {defaultTray} from "./tray/defaultTray";
-import {startupArguments} from "./utils/startupArguments";
-import {isDev} from "./utils/isDev";
+import {startupArguments} from "backend-essentials/src/utilities/startupArguments";
+import {isDev} from "backend-essentials/src/utilities/isDev";
 import './windows/dialog.window';
 import {resetAllSettings} from "./utils/resetAllSettings";
 import {aboutWindow} from "./windows/about.window";

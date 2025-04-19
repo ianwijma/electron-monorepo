@@ -1,5 +1,5 @@
-import {createWindow} from "./createWindow";
-import {isDebug} from "../utils/isDebug";
+import {createWindow} from "backend-essentials/src/utilities/createWindow";
+import {isDebug} from "backend-essentials/src/utilities/isDebug";
 
 export const clipboardHistoryWindow = createWindow({
     title: 'Clipboard history',
