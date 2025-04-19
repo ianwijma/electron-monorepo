@@ -1,5 +1,5 @@
 // EventHandlers are a wrapper around the eventbus, but allowing you to emit and listen to specific events.
-import {SimpleEventBus, SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
+import {SimpleEventBus, SimpleEventBusData} from "../types/eventbus.types";
 
 type StopListening = () => void;
 

@@ -1,4 +1,4 @@
 import {eventHandler} from "./eventHandler";
-import {createResponseHandler} from 'qlippy-common/src/createResponseHandler'
+import {createResponseHandler} from 'common-essentials/src/utilities/createResponseHandler'
 
 export const responseHandler = createResponseHandler(eventHandler)

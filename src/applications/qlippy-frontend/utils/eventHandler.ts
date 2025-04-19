@@ -1,5 +1,5 @@
 import {SimpleEventBus} from "common-essentials/src/types/eventbus.types";
-import {createEventHandler} from 'qlippy-common/src/createEventHandler'
+import {createEventHandler} from 'common-essentials/src/utilities/createEventHandler';
 import {isClient} from "./isClient";
 
 let eventBus: SimpleEventBus = {} as SimpleEventBus;

@@ -1,6 +1,6 @@
 import {nanoid} from "nanoid";
 import {EventHandler} from "./createEventHandler";
-import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
+import {SimpleEventBusData} from "../types/eventbus.types";
 
 export type RequestResponseOptions = {
     timeout?: number;

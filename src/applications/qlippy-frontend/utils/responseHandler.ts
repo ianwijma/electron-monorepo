@@ -1,5 +1,5 @@
 import {eventHandler} from "./eventHandler";
-import {createResponseHandler, ResponseHandler} from 'qlippy-common/src/createResponseHandler'
+import {createResponseHandler, ResponseHandler} from 'common-essentials/src/utilities/createResponseHandler'
 
 /**
  * Omitted handleResponse for now as I don't see a use for it, any data should be sent & stored on the main thread.

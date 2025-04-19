@@ -1,6 +1,6 @@
 {
   "name": "common-essentials",
-  "exports": {
-    ".": "./src"
+  "dependencies": {
+    "nanoid": "^5.0.9"
   }
 }
