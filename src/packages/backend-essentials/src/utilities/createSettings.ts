@@ -1,4 +1,4 @@
-import {fileExists, readYamlFile, writeYamlFile} from "./files";
+import {copyFile, fileExists, readYamlFile, writeYamlFile} from "./files";
 import {BaseSettings, SettingsVersion} from "common-essentials/src/types/settings.types";
 import {responseHandler} from "./responseHandler";
 import {eventHandler} from "./eventHandler";
@@ -114,6 +114,13 @@ export const createSettings = <T extends BaseSettings>({
 
     const performMigration = async () => {
         let currentSettings = getSettings();
+
+        if (currentSettings.version in migrations) {
+            // Backup settings in case something goes wrong...
+            const backupSettingFilePath = `${settingsFilePath}.backup_${currentSettings.version}_${Date.now()}`;
+            console.log(`We're about to perform a migration for the ${name} setting, backing up the current settings to ${backupSettingFilePath}`);
+            await copyFile(settingsFilePath, `${settingsFilePath}.backup_${Date.now()}`);
+        }
 
         while (currentSettings.version in migrations) {
             const migration = migrations[currentSettings.version];

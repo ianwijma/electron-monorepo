@@ -79,6 +79,13 @@ export const removeFile = async (relativeFilePath: string): Promise<void> => {
     await fs.unlink(normalizePath);
 }
 
+export const copyFile = async (fromRelativeFilePath: string, toRelativeFilePath: string): Promise<void> => {
+    const fromPath = normalizeFilePath(fromRelativeFilePath);
+    const toPath = normalizeFilePath(toRelativeFilePath);
+
+    await fs.copyFile(fromPath, toPath);
+}
+
 /**
  * Unsafe because it allows checking of file outside the syste,
  */
