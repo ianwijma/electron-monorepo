@@ -1,5 +1,6 @@
 import {KeyboardEventHandler, memo, useCallback, useEffect, useRef, useState} from "react";
 import { OpenClipboardHistoryAction } from 'qlippy-common/src/events/openClipboardHistory.event'
+import {ClipboardItem} from "qlippy-common/src/settings/clipboard.settings.types";
 
 export type ClipboardQueryParams = {
     query: string;
@@ -13,10 +14,12 @@ export type ClipboardQueryParams = {
     openSelected: (action: OpenClipboardHistoryAction) => void,
     pinSelected: () => void,
     restoreSelectedImage: () => void,
+    restoreSelectedText: () => void,
     close: () => void,
     isMenuShown: boolean,
     showMenu: () => void,
     hideMenu: () => void,
+    item: ClipboardItem | undefined
 }
 
 const tips = [
@@ -44,10 +47,12 @@ export const ClipboardQuery = memo(({
                                         openSelected,
                                         pinSelected,
                                         restoreSelectedImage,
+                                        restoreSelectedText,
                                         close,
                                         isMenuShown,
                                         showMenu,
                                         hideMenu,
+                                        item,
                                     }: ClipboardQueryParams) => {
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {
         if (event.ctrlKey) {
@@ -80,7 +85,12 @@ export const ClipboardQuery = memo(({
                     break;
                 case 'KeyC':
                     event.preventDefault();
-                    restoreSelectedImage();
+                    if (item?.type === 'image') {
+                        restoreSelectedImage();
+                    }
+                    if (item?.type === 'html') {
+                        restoreSelectedText();
+                    }
                     break;
             }
         } else {

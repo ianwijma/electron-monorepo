@@ -29,6 +29,10 @@ import {
     RestoreImageClipboardHistoryEventData,
     restoreImageClipboardHistoryEventName
 } from 'qlippy-common/src/events/restoreImageClipboardHistory.event'
+import {
+    RestoreTextClipboardHistoryEventData,
+    restoreTextClipboardHistoryEventName
+} from 'qlippy-common/src/events/restoreTextClipboardHistory.event'
 import {useWindowControls} from "frontend-essentials/src/hooks/useWindowControls";
 import {toHumanDateAgo} from 'common-essentials/src/utilities/date'
 import {ClipboardMenu} from "./clipboard-menu";
@@ -197,6 +201,16 @@ export default function ClipboardHistoryPage() {
         setSelectedIndex(0);
     }, [selectedItem, setSelectedIndex]);
 
+    const restoreSelectedText = useCallback(() => {
+        if (selectedItem && 'htmlText' in selectedItem && !!selectedItem.htmlText) {
+            eventHandler.emit<RestoreTextClipboardHistoryEventData>(restoreTextClipboardHistoryEventName, {
+                id: selectedItem.id
+            });
+        }
+
+        setSelectedIndex(0);
+    }, [selectedItem, setSelectedIndex]);
+
     const clearSelected = useCallback(() => {
         if (selectedItem) {
             eventHandler.emit<ClearClipboardHistoryEventData>(clearClipboardHistoryEventName, {
@@ -279,10 +293,12 @@ export default function ClipboardHistoryPage() {
                         openSelected={openSelected}
                         pinSelected={pinSelected}
                         restoreSelectedImage={restoreSelectedImage}
+                        restoreSelectedText={restoreSelectedText}
                         close={handleClose}
                         isMenuShown={showMenu}
                         showMenu={handleShowMenu}
                         hideMenu={handleHideMenu}
+                        item={selectedItem}
                     />
                 </div>
                 <div className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden rounded-bl-lg relative cursor-default not-draggable">

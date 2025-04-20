@@ -38,6 +38,12 @@ const createClipboardManager = () => {
         }
     }
 
+    const restoreText = (text: string) => {
+        if (text) {
+            clipboard.writeText(text, 'clipboard');
+        }
+    }
+
     return {
         add: async (newItem: ClipboardItem): Promise<void> => {
             const settings = clipboardSettings.getSettings();
@@ -109,6 +115,7 @@ const createClipboardManager = () => {
             });
         },
         restoreImage,
+        restoreText,
         restore: async (itemToRestore: ClipboardItem): Promise<void> => {
             const settings = clipboardSettings.getSettings();
             const {history} = settings;
@@ -140,17 +147,17 @@ const createClipboardManager = () => {
                     }
                     case 'url': {
                         const {url} = itemToRestore;
-                        clipboard.writeText(url, 'clipboard');
+                        restoreText(url);
                         break;
                     }
                     case 'path': {
                         const {path} = itemToRestore;
-                        clipboard.writeText(path, 'clipboard');
+                        restoreText(path);
                         break;
                     }
                     case 'colour': {
                         const {colourText} = itemToRestore;
-                        clipboard.writeText(colourText, 'clipboard');
+                        restoreText(colourText);
                         break;
                     }
                     case 'html': {
@@ -163,7 +170,7 @@ const createClipboardManager = () => {
                     }
                     case 'text': {
                         const {text} = itemToRestore;
-                        clipboard.writeText(text, 'clipboard');
+                        restoreText(text);
                         break;
                     }
                 }

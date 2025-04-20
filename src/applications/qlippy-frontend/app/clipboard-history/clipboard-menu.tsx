@@ -36,6 +36,10 @@ const urlImageKeyCombos = {
     'Ctrl+I': 'Open the screenshot externally',
 }
 
+const htmlKeyCombos = {
+    'Ctrl+C': 'Copy the HTML\'s cleaned text to clipboard',
+}
+
 export type ClipboardMenuParams = {
     show: boolean,
     item: ClipboardItem | undefined,
@@ -73,6 +77,13 @@ export const ClipboardMenu = memo(({show, item}: ClipboardMenuParams) => {
                     ...urlKeyCombos,
                     ...actualUrlImageKeyCombos
                 }
+            }
+            case 'html': {
+                return {
+                    ...baseKeyCombos,
+                    ...htmlKeyCombos,
+                    ...getPinKeyCombos(),
+                };
             }
             default: {
                 return {

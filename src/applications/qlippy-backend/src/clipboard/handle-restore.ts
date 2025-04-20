@@ -4,6 +4,9 @@ import {
 import {
     restoreImageClipboardHistoryEventName, RestoreImageClipboardHistoryEventData
 } from "qlippy-common/src/events/restoreImageClipboardHistory.event";
+import {
+    restoreTextClipboardHistoryEventName, RestoreTextClipboardHistoryEventData
+} from "qlippy-common/src/events/restoreTextClipboardHistory.event";
 import {clipboardManager} from "./manager";
 import {eventHandler} from "backend-essentials/src/utilities/eventHandler";
 
@@ -21,6 +24,13 @@ const createClipboardHandleRestore = () => {
                 const item = clipboardManager.getById(id);
                 if (item && 'imageFilePath' in item && !!item.imageFilePath) {
                     await clipboardManager.restoreImage(item.imageFilePath);
+                }
+            });
+
+            eventHandler.listen<RestoreTextClipboardHistoryEventData>(restoreTextClipboardHistoryEventName, async ({id}) => {
+                const item = clipboardManager.getById(id);
+                if (item && 'htmlText' in item && !!item.htmlText) {
+                    clipboardManager.restoreText(item.htmlText);
                 }
             });
         }
