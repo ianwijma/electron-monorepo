@@ -6,7 +6,14 @@ import {clipboardSettings} from "../settings/clipboard.setting";
 import {readFile, removeFile} from "backend-essentials/src/utilities/files";
 import {clipboard, nativeImage} from "electron";
 
-const CLIPBOARD_AMOUNT_LIMIT = 10_000;
+/**
+ * TODO: Tests these limites
+ * The clipboard manager UI is simple, and technically should handle the limit below.
+ * Couple of performance concerns I have:
+ * - Frontend rendering slows down, solution would be to only render the items in the view port.
+ * - Backend changes are slow, solution would be to migrate to SQLite instead of a YAML file... Something that is already in the pipeline.
+ */
+const CLIPBOARD_AMOUNT_LIMIT = 10_000; // TODO: Test these limits
 
 const createClipboardManager = () => {
     const removeItemFromHistory = async ({item, history}: {item: ClipboardItem, history: ClipboardItem[]}): Promise<ClipboardItem[]> => {
