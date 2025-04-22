@@ -2,6 +2,7 @@ import {createWindow} from "./createWindow";
 import {isDev} from "../utils/isDev";
 
 export const runnerWindow = createWindow({
+    developmentPort: 9200,
     title: 'Runner',
     route: 'runner',
     width: 1080,

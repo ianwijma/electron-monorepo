@@ -17,6 +17,7 @@ type OnEventsParams = CreateWindowReturn & {
 type OnEvents = (params: OnEventsParams) => void;
 
 export type CreateWindowParams = {
+    developmentPort: number,
     title: string,
     route: string,
     defaultUrlParams?: UrlParams,
@@ -52,6 +53,7 @@ export type CreateWindowReturn = {
 };
 
 export const createWindow = ({
+                                 developmentPort,
                                  title,
                                  route,
                                  defaultUrlParams,
@@ -129,7 +131,7 @@ export const createWindow = ({
         isInitialized();
 
         if (isDev()) {
-            return `http://localhost:8080/${route}`
+            return `http://localhost:${developmentPort}/${route}`
         }
 
         return path.join(__dirname, '..', 'renderer', `${route}.html`);

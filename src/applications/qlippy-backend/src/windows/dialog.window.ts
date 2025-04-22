@@ -38,6 +38,7 @@ const createDialog = <OP extends OpenParams, OR extends AnyObject>({
         open: (options: OP): Promise<OR> => {
             return new Promise<OR>(async (resolve, reject) => {
                 const {open, destroy, initialize, getUniqueWindowId} = createWindow({
+                    developmentPort: 9100,
                     title,
                     route,
                     resizable,

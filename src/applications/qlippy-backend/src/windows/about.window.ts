@@ -1,6 +1,7 @@
 import {createWindow} from "backend-essentials/src/utilities/createWindow";
 
 export const aboutWindow = createWindow({
+    developmentPort: 9100,
     title: 'About Qlippy',
     route: 'about',
     width: 384,

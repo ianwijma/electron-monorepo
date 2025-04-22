@@ -2,10 +2,10 @@
   "name": "qommand-frontend",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 8080 --turbopack",
+    "dev": "next dev -p 9200 --turbopack",
     "build": "next build",
     "build-quick": "next build --no-lint",
-    "start": "next start -p 8080",
+    "start": "next start -p 9200",
     "lint": "next lint"
   },
   "dependencies": {

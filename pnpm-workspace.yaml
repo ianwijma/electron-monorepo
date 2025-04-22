@@ -8,3 +8,4 @@ onlyBuiltDependencies:
   - puppeteer
   - sharp
 
+nodeLinker: hoisted

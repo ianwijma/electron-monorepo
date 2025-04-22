@@ -10,7 +10,6 @@
     "qommand-dev": "node ./bin/build.mjs --quick --app=qommand",
     "qommand-prod": "node ./bin/build.mjs --app=qommand"
   },
-  "dependencies": {},
   "devDependencies": {
     "concurrently": "^9.1.0",
     "lerna": "^8.2.2",

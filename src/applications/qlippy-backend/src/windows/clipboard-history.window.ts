@@ -2,6 +2,7 @@ import {createWindow} from "backend-essentials/src/utilities/createWindow";
 import {isDebug} from "backend-essentials/src/utilities/isDebug";
 
 export const clipboardHistoryWindow = createWindow({
+    developmentPort: 9100,
     title: 'Clipboard history',
     route: 'clipboard-history',
     width: 1080,
