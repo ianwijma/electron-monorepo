@@ -5,6 +5,12 @@ packages:
 onlyBuiltDependencies:
   - electron
   - electron-winstaller
+  - extract-file-icon
+  - fs-xattr
+  - isolated-vm
+  - macos-alias
+  - node-window-manager
+  - nx
   - puppeteer
   - sharp
 

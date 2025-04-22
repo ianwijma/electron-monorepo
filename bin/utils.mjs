@@ -52,6 +52,14 @@ export const fsExists = async (path) => {
 }
 
 /**
+ * @param path {string}
+ * @returns {Promise<boolean>}
+ */
+export const fsCopy = async (fromPath, toPath) => {
+    await `cp -r ${fromPath} ${toPath}`;
+}
+
+/**
  * @param packageJsonPath {string}
  * @param key {string}
  * @param value {string|undefined}
