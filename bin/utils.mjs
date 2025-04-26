@@ -52,8 +52,9 @@ export const fsExists = async (path) => {
 }
 
 /**
- * @param path {string}
- * @returns {Promise<boolean>}
+ * @param fromPath {string}
+ * @param toPath {string}
+ * @returns {Promise<void>}
  */
 export const fsCopy = async (fromPath, toPath) => {
     await `cp -r ${fromPath} ${toPath}`;
@@ -78,7 +79,6 @@ export const writePackageJsonWithRestore = async (packageJsonPath, key, value) =
 
     return restore
 }
-
 
 export const setupProject = async (app) => {
     const BACKEND_DIR = path.join(PROJECT_ROOT, 'src', 'applications', `${app}-backend`);

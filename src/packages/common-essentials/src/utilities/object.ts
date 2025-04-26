@@ -21,11 +21,11 @@ export const stringifyObject = <T extends AnyObject>(object: T): AnyObject<strin
     )
 }
 
-export function isObject(variable: any) {
+export const isObject = (variable: any) => {
     return (variable && typeof variable === 'object' && !Array.isArray(variable));
 }
 
-export function recursiveMerge<T extends AnyObject>(target: T, ...sources: Partial<T>[]): T {
+export const recursiveMerge = <T extends AnyObject>(target: T, ...sources: Partial<T>[]): T => {
     if (!sources.length) return target;
     const source = sources.shift();
 
@@ -42,3 +42,11 @@ export function recursiveMerge<T extends AnyObject>(target: T, ...sources: Parti
 
     return recursiveMerge(target, ...sources);
 }
+
+export const valueToKey = <T extends AnyObject>(object: T) => Object.keys(object).reduce((acc, key) => {
+    const value = object[key];
+
+    acc[value] = key;
+
+    return acc
+}, {})
