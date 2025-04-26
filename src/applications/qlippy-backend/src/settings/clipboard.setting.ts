@@ -1,5 +1,5 @@
 import {ClipboardSettings} from "qlippy-common/src/settings/clipboard.settings.types";
-import {createSettings, toMigrations} from "backend-essentials/src/utilities/createSettings";
+import {createSettings, toMigrations} from "backend-essentials/src/settings/createSettings";
 
 export const clipboardSettings = createSettings<ClipboardSettings>({
     name: 'clipboard',

@@ -3,7 +3,7 @@ import {
     ClipboardItem,
 } from 'qlippy-common/src/settings/clipboard.settings.types'
 import {clipboardSettings} from "../settings/clipboard.setting";
-import {readFile, removeFile} from "backend-essentials/src/utilities/files";
+import {readFile, removeFile} from "backend-essentials/src/files/files";
 import {clipboard, nativeImage} from "electron";
 
 /**

@@ -1,16 +1,16 @@
-import {copyFile, fileExists, readYamlFile, writeYamlFile} from "./files";
+import {copyFile, fileExists, readYamlFile, writeYamlFile} from "../files/files";
 import {BaseSettings, SettingsVersion} from "common-essentials/src/types/settings.types";
-import {responseHandler} from "./responseHandler";
-import {eventHandler} from "./eventHandler";
-import {settingsUpdatedEventName, type SettingsUpdatedEventData} from 'common-essentials/src/events/settingsUpdated.event'
-import {updateSettingsEventName, type UpdateSettingsEventData} from 'common-essentials/src/events/updateSettings.event'
+import {responseHandler} from "../utilities/responseHandler";
+import {eventHandler} from "../utilities/eventHandler";
+import {settingsUpdatedEventName, type SettingsUpdatedEventData} from '../../../common-essentials/src/events/settingsUpdated.event'
+import {updateSettingsEventName, type UpdateSettingsEventData} from '../../../common-essentials/src/events/updateSettings.event'
 import {
     settingsRequestName,
     type SettingsRequestReq,
     type SettingsRequestRes
-} from 'common-essentials/src/requests/settings.request'
+} from '../../../common-essentials/src/requests/settings.request'
 import diff from 'git-diff'
-import {isDebug} from "./isDebug";
+import {isDebug} from "../utilities/isDebug";
 
 export type SettingsName = string;
 

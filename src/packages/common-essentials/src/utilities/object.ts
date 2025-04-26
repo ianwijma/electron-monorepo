@@ -46,6 +46,7 @@ export const recursiveMerge = <T extends AnyObject>(target: T, ...sources: Parti
 export const valueToKey = <T extends AnyObject>(object: T) => Object.keys(object).reduce((acc, key) => {
     const value = object[key];
 
+    // @ts-ignore - IDK & IDC
     acc[value] = key;
 
     return acc

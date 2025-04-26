@@ -15,10 +15,10 @@ import {
 } from "./item-converters";
 import {clipboardManager} from "./manager";
 import { join as pathJoin } from 'node:path'
-import {fileExists, fileStats, UNSAFE_fileStats, writeFile} from "backend-essentials/src/utilities/files";
-import {screenshotUrl} from "../utils/screenshotSite";
+import {fileExists, fileStats, UNSAFE_fileStats, writeFile} from "backend-essentials/src/files/files";
 import {sha1} from "backend-essentials/src/utilities/crypto";
 import {nativeImage} from "electron";
+import {screenshotUrl} from "backend-essentials/src/utilities/screenshotSite";
 
 
 const CLIPBOARD_STORAGE_PATH = 'clipboard-files';

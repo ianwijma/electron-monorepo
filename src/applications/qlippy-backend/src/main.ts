@@ -9,18 +9,22 @@ import {aboutWindow} from "./windows/about.window";
 import {keyboardSettings} from "./settings/keyboard.setting";
 import {keyboardShortcuts} from "./utils/keyboard-shortcuts";
 import {clipboardHistoryWindow} from "./windows/clipboard-history.window";
-import {fileProtocol} from "./utils/fileProtocol";
+import {fileProtocol} from "../../../packages/backend-essentials/src/files/fileProtocol";
 import {clipboardHandleChange} from "./clipboard/handle-change";
 import {clipboardHandleClear} from "./clipboard/handle-clear";
 import {clipboardHandleRestore} from "./clipboard/handle-restore";
 import {clipboardChangeEmitter} from "./clipboard/change-emitter";
 import {clipboardSettings} from "./settings/clipboard.setting";
 import {clipboardHandleOpen} from "./clipboard/handle-open";
+import {settingsManager} from "../../../packages/backend-essentials/src/settings/settingsManager";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
     app.quit();
 }
+
+// Add the manager to the settings manager,
+settingsManager.addSettings(keyboardSettings, clipboardSettings);
 
 let isSingleInstance = app.requestSingleInstanceLock({isDev: isDev()});
 if (!isSingleInstance) {
@@ -36,8 +40,7 @@ if (!isSingleInstance) {
 
     const onReady = async () => {
         // Settings
-        await keyboardSettings.initialize();
-        await clipboardSettings.initialize();
+        await settingsManager.initialize();
 
         if (startupArguments.reset) {
             await resetAllSettings();
