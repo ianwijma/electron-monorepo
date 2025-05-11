@@ -1,3 +1,5 @@
+import {valueToKey} from 'common-essentials/src/utilities/object'
+
 export const KeyToAcceleratorMap = Object.freeze({
     "Digit0": "0",
     "Digit1": "1",
@@ -95,3 +97,5 @@ export const KeyToAcceleratorMap = Object.freeze({
     "F23": "f23",
     "F24": "f24"
 });
+
+export const AcceleratorToKeyMap = Object.freeze(valueToKey(KeyToAcceleratorMap))

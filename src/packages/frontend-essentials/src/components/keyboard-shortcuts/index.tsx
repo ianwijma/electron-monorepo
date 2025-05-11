@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
-import {KeyToAcceleratorMap} from "./map";
+import {AcceleratorToKeyMap, KeyToAcceleratorMap} from "./map";
+
+const defaultSettings: Settings = {key: '', shift: '', ctrl: '', alt: '', meta: ''};
 
 type Settings = {
     key: string;
@@ -21,15 +23,46 @@ const toAccelerate = (settings: Settings): string => {
     ].filter(Boolean).join('+');
 }
 
+const fromAccelerate = (accelerate: string): Settings => {
+    const split = accelerate.split('+').map(s => s.trim());
+
+    return split.reduce<Settings>((acc, key) => {
+        switch (key) {
+            case 'Shift':
+                acc.shift = key;
+                break;
+            case 'CommandOrControl':
+                acc.ctrl = key;
+                break;
+            case 'Alt':
+                acc.alt = key;
+                break;
+            case 'Super':
+                acc.meta = key;
+                break;
+            default: {
+                if (key in AcceleratorToKeyMap) {
+                    acc.key = AcceleratorToKeyMap[key];
+                }
+                break;
+            }
+        }
+
+        return acc;
+    }, {...defaultSettings});
+}
+
 let globalTrackingLock = false;
 
-export type KeyboardShortcutsProps = { onShortcutChanged: (accelerator: string) => void };
+export type KeyboardShortcutsProps = {
+    onShortcutChanged: (accelerator: string) => void;
+    accelerate: string;
+};
 
-export const KeyboardShortcuts = ({onShortcutChanged}: KeyboardShortcutsProps) => {
+export const KeyboardShortcuts = ({accelerate, onShortcutChanged}: KeyboardShortcutsProps) => {
     const [localTrackingLock, setLocalTrackingLock] = useState(false);
 
-    const defaultSettings: Settings = {key: '', shift: '', ctrl: '', alt: '', meta: ''};
-    const [settings, setSettings] = useState<Settings>(defaultSettings);
+    const [settings, setSettings] = useState<Settings>(fromAccelerate(accelerate));
 
     const handleKeyDown = (event: KeyboardEvent) => {
         event.preventDefault();
@@ -71,11 +104,38 @@ export const KeyboardShortcuts = ({onShortcutChanged}: KeyboardShortcutsProps) =
         }
     }
 
+    const onResetClicked = () => {
+        setSettings(defaultSettings);
+
+        onShortcutChanged(toAccelerate(defaultSettings));
+    }
+
+    const onCancelClicked = () => {
+    }
+
     const shortcut = toAccelerate(settings);
 
-    return (
-        <button onClick={onTrackingClicked}>
-            {localTrackingLock ? `<${shortcut ? shortcut : 'Press to register'}>` : shortcut ? shortcut : '// Nothing'}
+    if (localTrackingLock) {
+        return (
+            <div className="flex gap-2">
+                <span>{shortcut ? shortcut : 'Press keys to set shortcuts'}</span>
+                <button onClick={onTrackingClicked}>Click to confirm</button>
+                <button onClick={onCancelClicked}>Click to cancel</button>
+            </div>
+        )
+    }
+
+    if (shortcut === '') {
+        return <button className='border border-transparent' onClick={onTrackingClicked}>
+            Click to set shortcut
         </button>
+    }
+
+    return (
+        <div className="flex gap-2">
+            <span>{shortcut}</span>
+            <button onClick={onTrackingClicked}>Click to edit</button>
+            <button onClick={onResetClicked}>Click to reset</button>
+        </div>
     )
 }

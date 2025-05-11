@@ -53,5 +53,5 @@
     "backend-essentials": "workspace:*",
     "common-essentials": "workspace:*"
   },
-  "productName": "qlippy-dev-dev"
+  "productName": "qlippy-dev-dev-dev"
 }
