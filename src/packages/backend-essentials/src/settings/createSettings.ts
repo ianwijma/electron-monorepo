@@ -2,8 +2,14 @@ import {copyFile, fileExists, readYamlFile, writeYamlFile} from "../files/files"
 import {BaseSettings, SettingsVersion} from "common-essentials/src/types/settings.types";
 import {responseHandler} from "../utilities/responseHandler";
 import {eventHandler} from "../utilities/eventHandler";
-import {settingsUpdatedEventName, type SettingsUpdatedEventData} from '../../../common-essentials/src/events/settingsUpdated.event'
-import {updateSettingsEventName, type UpdateSettingsEventData} from '../../../common-essentials/src/events/updateSettings.event'
+import {
+    settingsUpdatedEventName,
+    type SettingsUpdatedEventData
+} from '../../../common-essentials/src/events/settingsUpdated.event'
+import {
+    updateSettingsEventName,
+    type UpdateSettingsEventData
+} from '../../../common-essentials/src/events/updateSettings.event'
 import {
     settingsRequestName,
     type SettingsRequestReq,
@@ -133,7 +139,7 @@ export const createSettings = <T extends BaseSettings>({
             // Ensure the version is bumped correctly.
             migratedSettings.version = toVersion;
 
-            await updateSettings(migratedSettings, { emitEvents: false });
+            await updateSettings(migratedSettings, {emitEvents: false});
 
             currentSettings = getSettings();
         }

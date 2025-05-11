@@ -38,6 +38,9 @@ const createKeyboardShortcuts = (): KeyboardShortcuts => {
         Object.keys(shortcuts).forEach(accelerator => {
             const action = shortcuts[accelerator];
 
+            console.log({action, shortcuts, accelerator});
+
+            // TODO: Fix
             if (globalShortcut.isRegistered(accelerator)) {
                 console.log(`[keyboard-shortcut] accelerator "${accelerator}" already registered`, {action})
             } else {

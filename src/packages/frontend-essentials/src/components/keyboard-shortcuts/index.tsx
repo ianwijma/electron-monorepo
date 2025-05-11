@@ -42,7 +42,7 @@ const fromAccelerate = (accelerate: string): Settings => {
                 break;
             default: {
                 if (key in AcceleratorToKeyMap) {
-                    acc.key = AcceleratorToKeyMap[key];
+                    acc.key = key;
                 }
                 break;
             }
@@ -111,6 +111,10 @@ export const KeyboardShortcuts = ({accelerate, onShortcutChanged}: KeyboardShort
     }
 
     const onCancelClicked = () => {
+        setSettings(fromAccelerate(accelerate));
+
+        setLocalTrackingLock(false);
+        globalTrackingLock = false;
     }
 
     const shortcut = toAccelerate(settings);
