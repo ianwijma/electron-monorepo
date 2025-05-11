@@ -1,6 +1,6 @@
 {
   "name": "qlippy-backend",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Qlip that!",
   "main": ".webpack/main",
   "scripts": {
@@ -52,6 +52,5 @@
     "puppeteer": "^24.3.0",
     "backend-essentials": "workspace:*",
     "common-essentials": "workspace:*"
-  },
-  "productName": "qlippy-dev"
+  }
 }
