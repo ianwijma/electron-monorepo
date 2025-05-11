@@ -1,6 +1,6 @@
 import {useSearchParams} from "next/navigation";
 import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
-import {useListen} from "src/packages/frontend-essentials/src/hooks/useEventHandler";
+import {useListen} from "frontend-essentials/src/hooks/useEventHandler";
 import {
     buttonClickedEventName,
     type ButtonClickedEventData
