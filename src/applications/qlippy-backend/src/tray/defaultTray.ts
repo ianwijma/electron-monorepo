@@ -4,6 +4,7 @@ import {resetAllSettings} from "../utils/resetAllSettings";
 import {defaultLogo} from 'qlippy-common/src/logos'
 import {aboutWindow} from "../windows/about.window";
 import {clipboardHistoryWindow} from "../windows/clipboard-history.window";
+import {settingsWindow} from "../windows/settings.window";
 
 export const defaultTray = {
     async initialize() {
@@ -24,12 +25,21 @@ export const defaultTray = {
             },
         ]
 
+        let settingsItems: MenuItemConstructorOptions[] = [
+            {
+                label: 'Settings',
+                type: 'normal',
+                click: () => settingsWindow.open()
+            }
+        ]
+
         const contextMenu = Menu.buildFromTemplate([
             {
                 label: 'Show',
                 type: 'normal',
                 click: () => clipboardHistoryWindow.toggle()
             },
+            ...isDev() ? settingsItems : [],
             {
                 label: 'About',
                 type: 'normal',

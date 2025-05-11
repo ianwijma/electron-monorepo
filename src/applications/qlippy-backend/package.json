@@ -52,5 +52,6 @@
     "puppeteer": "^24.3.0",
     "backend-essentials": "workspace:*",
     "common-essentials": "workspace:*"
-  }
+  },
+  "productName": "qlippy-dev-dev"
 }

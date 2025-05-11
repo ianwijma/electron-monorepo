@@ -9,14 +9,15 @@ import {aboutWindow} from "./windows/about.window";
 import {keyboardSettings} from "./settings/keyboard.setting";
 import {keyboardShortcuts} from "./utils/keyboard-shortcuts";
 import {clipboardHistoryWindow} from "./windows/clipboard-history.window";
-import {fileProtocol} from "../../../packages/backend-essentials/src/files/fileProtocol";
+import {fileProtocol} from "backend-essentials/src/files/fileProtocol";
 import {clipboardHandleChange} from "./clipboard/handle-change";
 import {clipboardHandleClear} from "./clipboard/handle-clear";
 import {clipboardHandleRestore} from "./clipboard/handle-restore";
 import {clipboardChangeEmitter} from "./clipboard/change-emitter";
 import {clipboardSettings} from "./settings/clipboard.setting";
 import {clipboardHandleOpen} from "./clipboard/handle-open";
-import {settingsManager} from "../../../packages/backend-essentials/src/settings/settingsManager";
+import {settingsManager} from "backend-essentials/src/settings/settingsManager";
+import {settingsWindow} from "./windows/settings.window";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -59,6 +60,7 @@ if (!isSingleInstance) {
 
         // Windows
         await clipboardHistoryWindow.initialize();
+        await settingsWindow.initialize();
         await aboutWindow.initialize();
 
         // Tray

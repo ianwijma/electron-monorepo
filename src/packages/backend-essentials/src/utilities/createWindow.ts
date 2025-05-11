@@ -5,6 +5,7 @@ import {eventBus} from "./eventBus";
 import {eventHandler} from "./eventHandler";
 import {closeWindowEventName, type CloseWindowEventData} from 'common-essentials/src/events/closeWindow.event';
 import {minimizeWindowEventName, type MinimizeWindowEventData} from 'common-essentials/src/events/minimizeWindow.event';
+import {maximizeWindowEventName, type MaximizeWindowEventData} from 'common-essentials/src/events/maximizeWindow.event';
 import {StopListening} from "common-essentials/src/types/eventbus.types";
 import {sleep} from "./sleep";
 import {isDebug} from "./isDebug";
@@ -114,10 +115,25 @@ export const createWindow = ({
         // Reset the window content.
         loadWindowPromise = loadWindow({urlParams: defaultUrlParams});
     }
-    const minimize = async () => {
+    const minimize = async (): Promise<void> => {
         isInitialized();
 
         window.minimize();
+    }
+    const maximize = async (): Promise<void> => {
+        isInitialized();
+
+        window.maximize();
+    }
+    const restoreMaximized = async (): Promise<void> => {
+        isInitialized();
+
+        window.restore();
+    }
+    const isMaximized = async (): Promise<boolean> => {
+        isInitialized();
+
+        return window.isMaximized();
     }
     const getHash = ({urlParams}: { urlParams: UrlParams }): Record<string, string> => {
         isInitialized();
@@ -215,7 +231,7 @@ export const createWindow = ({
 
     const toggle = async ({urlParams}: OpenParams = {}) => {
         isInitialized();
-        
+
         if (window.isVisible()) {
             await close();
         } else {
@@ -257,15 +273,27 @@ export const createWindow = ({
     const initializeWindowActions = () => {
         const isCurrentWindow = ({windowId}: { windowId: number }) => windowId === window.id;
 
-        eventHandler.listen<CloseWindowEventData>(closeWindowEventName, (data) => {
+        eventHandler.listen<CloseWindowEventData>(closeWindowEventName, async (data) => {
             if (isCurrentWindow(data)) {
-                close();
+                await close();
             }
         });
 
-        eventHandler.listen<MinimizeWindowEventData>(minimizeWindowEventName, (data) => {
+        eventHandler.listen<MinimizeWindowEventData>(minimizeWindowEventName, async (data) => {
             if (isCurrentWindow(data)) {
-                minimize();
+                await minimize();
+            }
+        });
+
+        eventHandler.listen<MaximizeWindowEventData>(maximizeWindowEventName, async (data) => {
+            console.log('maximizeWindowEventData', data);
+            if (isCurrentWindow(data)) {
+                console.log('isMaximizing', data);
+                if (await isMaximized()) {
+                    await restoreMaximized()
+                } else {
+                    await maximize();
+                }
             }
         });
     }
@@ -312,7 +340,7 @@ export const createWindow = ({
         window.webContents.setWindowOpenHandler((details) => {
             shell.openExternal(details.url); // Open URL in user's browser.
 
-            return { action: "deny" }; // Prevent the app from opening the URL.
+            return {action: "deny"}; // Prevent the app from opening the URL.
         })
 
         loadWindowPromise = loadWindow({urlParams: defaultUrlParams});

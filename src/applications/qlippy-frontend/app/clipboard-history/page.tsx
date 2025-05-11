@@ -69,7 +69,7 @@ export default function ClipboardHistoryPage() {
         setSelectedIndex(0);
     }, [setTypeFilter, setSelectedIndex]);
 
-    const {history} = useMemo<{history: ClipboardHistory,}>(() => ({
+    const {history} = useMemo<{ history: ClipboardHistory, }>(() => ({
         history: isLoading ? [] as ClipboardHistory : settings.history,
     }), [isLoading, settings]);
 
@@ -82,34 +82,39 @@ export default function ClipboardHistoryPage() {
                 amountOfPinnedItems.current++;
             }
 
-            const base = { id, type, item, group: pinned ? 'Pinned' : toHumanDateAgo(dateTimeCopied), };
+            const base = {id, type, item, group: pinned ? 'Pinned' : toHumanDateAgo(dateTimeCopied),};
             switch (type) {
-                case 'text': return {
-                    ...base,
-                    text: item.text?.toString(),
-                };
-                case 'colour': return {
-                    ...base,
-                    text: item.colour?.toLowerCase(),
-                }
-                case 'html': return {
-                    ...base,
-                    text: item.htmlText?.toLowerCase(),
-                }
-                case 'url': return {
-                    ...base,
-                    text: item.url?.toLowerCase(),
-                }
+                case 'text':
+                    return {
+                        ...base,
+                        text: item.text?.toString(),
+                    };
+                case 'colour':
+                    return {
+                        ...base,
+                        text: item.colour?.toLowerCase(),
+                    }
+                case 'html':
+                    return {
+                        ...base,
+                        text: item.htmlText?.toLowerCase(),
+                    }
+                case 'url':
+                    return {
+                        ...base,
+                        text: item.url?.toLowerCase(),
+                    }
                 case 'path': {
                     return {
                         ...base,
                         text: item.path?.toLowerCase(),
                     }
                 }
-                case 'image': return {
-                    ...base,
-                    text: `image`
-                }
+                case 'image':
+                    return {
+                        ...base,
+                        text: `image`
+                    }
                 default:
                     // Make TS happy
                     return undefined;
@@ -120,7 +125,7 @@ export default function ClipboardHistoryPage() {
     const searchQuery = useMemo(() => query.toLowerCase(), [query]);
 
     const filteredHistory = useMemo<SearchableHistory[]>(() => {
-        return searchableHistory.filter(({ text, type }) => {
+        return searchableHistory.filter(({text, type}) => {
             const textMatch = text.includes(searchQuery);
 
             const typeSearch = typeFilter !== '';
@@ -143,7 +148,7 @@ export default function ClipboardHistoryPage() {
         }, amountOfPinnedItems.current > 0 ? {'Pinned': []} : {});
     }, [filteredHistory]);
 
-    const getSearchableHistoryByIndex= useCallback((index: number): SearchableHistory | undefined => {
+    const getSearchableHistoryByIndex = useCallback((index: number): SearchableHistory | undefined => {
         let currentIndex = 0;
         return Object.keys(filteredGroupedHistory).reduce((acc, group) => {
             const searchableHistories = filteredGroupedHistory[group];
@@ -214,7 +219,7 @@ export default function ClipboardHistoryPage() {
     const clearSelected = useCallback(() => {
         if (selectedItem) {
             eventHandler.emit<ClearClipboardHistoryEventData>(clearClipboardHistoryEventName, {
-                ids: [ selectedItem.id ]
+                ids: [selectedItem.id]
             });
         }
 
@@ -277,8 +282,9 @@ export default function ClipboardHistoryPage() {
     const handleHideMenu = useCallback(() => setShowMenu(false), [setShowMenu]);
 
     return (
-        <DefaultWindowContainer hideTitleBar title='Qlippy' className="draggable bg-opacity-70 bg-white rounded-xl select-none relative overflow-clip">
-            <ClipboardMenu show={showMenu} item={selectedItem} />
+        <DefaultWindowContainer hideTitleBar title='Qlippy'
+                                className="draggable bg-opacity-70 bg-white rounded-xl select-none relative overflow-clip">
+            <ClipboardMenu show={showMenu} item={selectedItem}/>
             <div className="h-screen w-screen max-w-full grid gap-2 p-2 grid-rows-[3rem_1fr] grid-cols-[2fr_3fr]">
                 <div className="col-span-2 row-span-1">
                     <ClipboardQuery
@@ -301,7 +307,8 @@ export default function ClipboardHistoryPage() {
                         item={selectedItem}
                     />
                 </div>
-                <div className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden rounded-bl-lg relative cursor-default not-draggable">
+                <div
+                    className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden rounded-bl-lg relative cursor-default not-draggable">
                     <ClipboardList
                         history={filteredGroupedHistory}
                         selectedIndex={selectedIndex}
