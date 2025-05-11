@@ -25,13 +25,7 @@ export const defaultTray = {
             },
         ]
 
-        let settingsItems: MenuItemConstructorOptions[] = [
-            {
-                label: 'Settings',
-                type: 'normal',
-                click: () => settingsWindow.open()
-            }
-        ]
+        let settingsItems: MenuItemConstructorOptions[] = []
 
         const contextMenu = Menu.buildFromTemplate([
             {
@@ -39,7 +33,11 @@ export const defaultTray = {
                 type: 'normal',
                 click: () => clipboardHistoryWindow.toggle()
             },
-            ...isDev() ? settingsItems : [],
+            {
+                label: 'Settings',
+                type: 'normal',
+                click: () => settingsWindow.open()
+            },
             {
                 label: 'About',
                 type: 'normal',
