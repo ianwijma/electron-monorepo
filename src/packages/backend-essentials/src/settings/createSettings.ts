@@ -1,4 +1,3 @@
-import {copyFile, fileExists, readYamlFile, writeYamlFile} from "../files/files";
 import {BaseSettings, SettingsVersion} from "common-essentials/src/types/settings.types";
 import {responseHandler} from "../utilities/responseHandler";
 import {eventHandler} from "../utilities/eventHandler";
@@ -17,6 +16,7 @@ import {
 } from '../../../common-essentials/src/requests/settings.request'
 import diff from 'git-diff'
 import {isDebug} from "../utilities/isDebug";
+import {FileSettingsDriver} from "./drivers/fileSettingsDriver";
 
 export type SettingsName = string;
 
@@ -58,6 +58,19 @@ export type CreateSettingReturn<T extends BaseSettings> = {
     resetSettings: () => Promise<T>;
 }
 
+const getSettingsDriver = <T extends BaseSettings>(defaultSettings: T) => {
+    const {driver} = defaultSettings;
+
+    switch (driver) {
+        case "file":
+            return FileSettingsDriver({defaultSettings});
+        case "sqlite":
+            return FileSettingsDriver({defaultSettings});
+        default:
+            throw new Error(`Unknown driver: ${driver}`);
+    }
+}
+
 export const createSettings = <T extends BaseSettings>({
                                                            name,
                                                            defaultSettings,
@@ -66,15 +79,18 @@ export const createSettings = <T extends BaseSettings>({
                                                            migrations = {},
                                                        }: CreateSettingParams<T>): CreateSettingReturn<T> => {
     const actuallyDefaultSettings: T = {name, ...defaultSettings} as T;
-    const settingsFilePath = `settings/${name}.yaml`;
+    const settingsDriver = getSettingsDriver(actuallyDefaultSettings);
     let settingsCache: T;
 
     const isInitialized = () => {
         if (!settingsCache) throw new Error(`Setting ${name} was not initialized`);
+        
     }
 
     const initialize = async () => {
         console.info(`Initializing ${name} settings`);
+
+        await settingsDriver.init();
 
         await syncSettings();
 
@@ -90,12 +106,7 @@ export const createSettings = <T extends BaseSettings>({
     };
 
     const syncSettings = async () => {
-        const settingsFileExists = await fileExists(settingsFilePath);
-        if (!settingsFileExists) {
-            await writeYamlFile<T>(settingsFilePath, actuallyDefaultSettings);
-        }
-
-        const settings = await readYamlFile<T>(settingsFilePath);
+        const settings = await settingsDriver.get();
 
         settingsCache = await postLoadFn(settings);
     }
@@ -121,15 +132,10 @@ export const createSettings = <T extends BaseSettings>({
     const performMigration = async () => {
         let currentSettings = getSettings();
 
-        // Backup locations
-        const dateNow = Date.now();
-        const backupSettingsFilePath = `${settingsFilePath}.backup_${dateNow}`;
-        const debugSettingsFilePath = `${settingsFilePath}.backup_${dateNow}`;
-
         const isGoingToMigrate = currentSettings.version in migrations;
         if (isGoingToMigrate) {
-            console.log(`We're about to perform a migration for the ${name} setting, backing up the current settings to ${backupSettingsFilePath}`);
-            await copyFile(settingsFilePath, backupSettingsFilePath);
+            console.log(`We're about to perform a migration for the ${name} setting, backing up the current settings`);
+            await settingsDriver.backup();
         }
 
         while (currentSettings.version in migrations) {
@@ -151,7 +157,7 @@ export const createSettings = <T extends BaseSettings>({
 
         if (isGoingToMigrate) {
             // Backing up the post-migration settings for debugging migration errors.
-            await copyFile(settingsFilePath, debugSettingsFilePath);
+            await settingsDriver.backup({name: 'debug'});
         }
     };
 
@@ -167,7 +173,7 @@ export const createSettings = <T extends BaseSettings>({
 
         const formattedSettings = await preSaveFn(settingToUpdate);
 
-        await writeYamlFile<T>(settingsFilePath, formattedSettings);
+        await settingsDriver.set(formattedSettings);
 
         await syncSettings();
 
@@ -197,7 +203,7 @@ export const createSettings = <T extends BaseSettings>({
     }
 
     const resetSettings = async () => {
-        await writeYamlFile<T>(settingsFilePath, actuallyDefaultSettings);
+        await settingsDriver.set(actuallyDefaultSettings);
 
         await syncSettings();
 

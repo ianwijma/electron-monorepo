@@ -4,11 +4,13 @@
     "common-essentials": "workspace:*",
     "git-diff": "^2.0.6",
     "yaml": "^1.10.2",
-    "yargs-parser": "^21.1.1"
+    "yargs-parser": "^21.1.1",
+    "sql.js": "^1.13.0"
   },
   "devDependencies": {
     "@types/git-diff": "^2.0.7",
     "electron": "34.1.0",
-    "@types/yargs-parser": "^21.0.3"
+    "@types/yargs-parser": "^21.0.3",
+    "@types/sql.js": "^1.4.9"
   }
 }
