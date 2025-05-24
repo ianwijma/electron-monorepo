@@ -121,20 +121,25 @@ export const createSettings = <T extends BaseSettings>({
     const performMigration = async () => {
         let currentSettings = getSettings();
 
-        if (currentSettings.version in migrations) {
-            // Backup settings in case something goes wrong...
-            const backupSettingFilePath = `${settingsFilePath}.backup_${currentSettings.version}_${Date.now()}`;
-            console.log(`We're about to perform a migration for the ${name} setting, backing up the current settings to ${backupSettingFilePath}`);
-            await copyFile(settingsFilePath, `${settingsFilePath}.backup_${Date.now()}`);
+        // Backup locations
+        const dateNow = Date.now();
+        const backupSettingsFilePath = `${settingsFilePath}.backup_${dateNow}`;
+        const debugSettingsFilePath = `${settingsFilePath}.backup_${dateNow}`;
+
+        const isGoingToMigrate = currentSettings.version in migrations;
+        if (isGoingToMigrate) {
+            console.log(`We're about to perform a migration for the ${name} setting, backing up the current settings to ${backupSettingsFilePath}`);
+            await copyFile(settingsFilePath, backupSettingsFilePath);
         }
 
         while (currentSettings.version in migrations) {
             const migration = migrations[currentSettings.version];
             const {fromVersion, toVersion, migrateFunction} = migration;
 
-            console.time(`Migrating ${name} settings from ${fromVersion} to ${toVersion}`);
+            const timeLog = `Migrating ${name} settings from ${fromVersion} to ${toVersion}`;
+            console.time(timeLog);
             const migratedSettings = await migrateFunction(currentSettings);
-            console.timeEnd(`Migrating ${name} settings from ${fromVersion} to ${toVersion}`);
+            console.timeEnd(timeLog);
 
             // Ensure the version is bumped correctly.
             migratedSettings.version = toVersion;
@@ -142,6 +147,11 @@ export const createSettings = <T extends BaseSettings>({
             await updateSettings(migratedSettings, {emitEvents: false});
 
             currentSettings = getSettings();
+        }
+
+        if (isGoingToMigrate) {
+            // Backing up the post-migration settings for debugging migration errors.
+            await copyFile(settingsFilePath, debugSettingsFilePath);
         }
     };
 
