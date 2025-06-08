@@ -17,6 +17,7 @@ import {
 import diff from 'git-diff'
 import {isDebug} from "../utilities/isDebug";
 import {FileSettingsDriver} from "./drivers/fileSettingsDriver";
+import {DatabaseSettingsDriver} from "./drivers/databaseSettingDriver";
 
 export type SettingsName = string;
 
@@ -65,7 +66,7 @@ const getSettingsDriver = <T extends BaseSettings>(defaultSettings: T) => {
         case "file":
             return FileSettingsDriver({defaultSettings});
         case "sqlite":
-            return FileSettingsDriver({defaultSettings});
+            return DatabaseSettingsDriver({defaultSettings});
         default:
             throw new Error(`Unknown driver: ${driver}`);
     }
@@ -84,7 +85,7 @@ export const createSettings = <T extends BaseSettings>({
 
     const isInitialized = () => {
         if (!settingsCache) throw new Error(`Setting ${name} was not initialized`);
-        
+
     }
 
     const initialize = async () => {
