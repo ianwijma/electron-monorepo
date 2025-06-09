@@ -23,21 +23,21 @@ const getClipboardImage = () => {
     const image: NativeImage = clipboard.readImage('clipboard');
     const isImageEmpty: boolean = image.isEmpty();
     const imageHash: undefined | string = isImageEmpty ? undefined : sha1(image.getBitmap());
-    return { image, isImageEmpty, imageHash }
+    return {image, isImageEmpty, imageHash}
 }
 
 const getClipboardHtml = () => {
     const html: string = clipboard.readHTML('clipboard');
     const isHtmlEmpty: boolean = html.trim() === '';
     const htmlHash: undefined | string = isHtmlEmpty ? undefined : sha1(html);
-    return { html, isHtmlEmpty, htmlHash }
+    return {html, isHtmlEmpty, htmlHash}
 }
 
 const getClipboardText = () => {
     const text: string = clipboard.readText('clipboard');
     const isTextEmpty: boolean = text.trim() === '';
     const textHash: undefined | string = isTextEmpty ? undefined : sha1(text);
-    return { text, isTextEmpty, textHash }
+    return {text, isTextEmpty, textHash}
 }
 
 const createClipboardChangeEmitter = () => {

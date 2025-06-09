@@ -26,12 +26,14 @@ type ConverterType<Base extends Record<string, any>> = Base & {
     hash: string,
 }
 
-export const nativeImageToImageClipboardItem = ({image, hash}: ConverterType<{image: NativeImage}>): ImageClipboardItem => {
+export const nativeImageToImageClipboardItem = ({image, hash}: ConverterType<{
+    image: NativeImage
+}>): ImageClipboardItem => {
     const imageSize = image.getSize();
     return {
         type: 'image',
         imageFilePath: undefined,
-        ...getBase({ hash }),
+        ...getBase({hash}),
         aspectRatio: image.getAspectRatio(),
         width: imageSize.width,
         height: imageSize.height,
@@ -50,7 +52,7 @@ export const isTextAColour = (text: string) => {
     return isHex || isShortHex || isTransparentHex;
 }
 
-export const textToColourClipboardItem = ({text, hash}: ConverterType<{text: string}>): ColourClipboardItem => {
+export const textToColourClipboardItem = ({text, hash}: ConverterType<{ text: string }>): ColourClipboardItem => {
     let colour = text.trim();
 
     const isHex = HEX_COLOUR_REGEX.test(colour);
@@ -66,30 +68,38 @@ export const textToColourClipboardItem = ({text, hash}: ConverterType<{text: str
         type: 'colour',
         colour,
         colourText: text,
-        ...getBase({ hash }),
+        ...getBase({hash}),
         isHex,
         isShortHex,
         isTransparentHex,
     }
 }
 
-export const htmlToHtmlClipboardItem = ({html, htmlText, hash}: ConverterType<{html: string, htmlText: string}>): HtmlClipboardItem => {
+export const htmlToHtmlClipboardItem = ({html, htmlText, hash}: ConverterType<{
+    html: string,
+    htmlText: string
+}>): HtmlClipboardItem => {
     return {
         type: 'html',
-        html,
-        ...getBase({ hash }),
+        html: undefined,
+        htmlPath: undefined,
+        ...getBase({hash}),
         length: html.length,
-        htmlText,
+        htmlText: undefined,
+        htmlTextPath: undefined,
         htmlTextLength: htmlText.length,
     }
 }
 
-export const textToPathClipboardItem = ({ text, stats, hash }: ConverterType<{ text: string, stats: Stats }>): PathClipboardItem => {
+export const textToPathClipboardItem = ({text, stats, hash}: ConverterType<{
+    text: string,
+    stats: Stats
+}>): PathClipboardItem => {
     const path = text.trim();
     return {
         type: 'path',
         path,
-        ...getBase({ hash }),
+        ...getBase({hash}),
         length: path.length,
         isBlockDevice: stats.isBlockDevice(),
         isCharacterDevice: stats.isCharacterDevice(),
@@ -124,12 +134,15 @@ export const isTextAUrl = (text: string): URL | false => {
     }
 }
 
-export const textToUrlClipboardItem = ({text, url, hash}: ConverterType<{text: string, url: URL}>): UrlClipboardItem => {
+export const textToUrlClipboardItem = ({text, url, hash}: ConverterType<{
+    text: string,
+    url: URL
+}>): UrlClipboardItem => {
     const urlString = text.trim();
     return {
         type: 'url',
         url: urlString,
-        ...getBase({ hash }),
+        ...getBase({hash}),
         length: urlString.length,
         host: url.host,
         hostname: url.hostname,
@@ -153,8 +166,9 @@ export const textToUrlClipboardItem = ({text, url, hash}: ConverterType<{text: s
 export const textToTextClipboardItem = ({text, hash}: ConverterType<{ text: string }>): TextClipboardItem => {
     return {
         type: 'text',
-        text,
-        ...getBase({ hash }),
+        text: undefined,
+        textPath: undefined,
+        ...getBase({hash}),
         length: text.length,
     }
 }

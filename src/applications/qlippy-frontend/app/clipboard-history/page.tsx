@@ -126,6 +126,8 @@ export default function ClipboardHistoryPage() {
 
     const filteredHistory = useMemo<SearchableHistory[]>(() => {
         return searchableHistory.filter(({text, type}) => {
+            if (!text) return false;
+
             const textMatch = text.includes(searchQuery);
 
             const typeSearch = typeFilter !== '';

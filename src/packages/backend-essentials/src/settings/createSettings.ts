@@ -17,6 +17,7 @@ import {
 import diff from 'git-diff'
 import {isDebug} from "../utilities/isDebug";
 import {FileSettingsDriver} from "./drivers/fileSettingsDriver";
+import {isVerbose} from "../utilities/isVerbose";
 
 export type SettingsName = string;
 
@@ -58,17 +59,6 @@ export type CreateSettingReturn<T extends BaseSettings> = {
     resetSettings: () => Promise<T>;
 }
 
-const getSettingsDriver = <T extends BaseSettings>(defaultSettings: T) => {
-    const {driver} = defaultSettings;
-
-    switch (driver) {
-        case "file":
-            return FileSettingsDriver({defaultSettings});
-        default:
-            throw new Error(`Unknown driver: ${driver}`);
-    }
-}
-
 export const createSettings = <T extends BaseSettings>({
                                                            name,
                                                            defaultSettings,
@@ -77,7 +67,7 @@ export const createSettings = <T extends BaseSettings>({
                                                            migrations = {},
                                                        }: CreateSettingParams<T>): CreateSettingReturn<T> => {
     const actuallyDefaultSettings: T = {name, ...defaultSettings} as T;
-    const settingsDriver = getSettingsDriver(actuallyDefaultSettings);
+    const settingsDriver = FileSettingsDriver({defaultSettings: actuallyDefaultSettings});
     let settingsCache: T;
 
     const isInitialized = () => {
@@ -104,9 +94,14 @@ export const createSettings = <T extends BaseSettings>({
     };
 
     const syncSettings = async () => {
+        if (isVerbose()) console.time(`[${name}] Sync settings`);
         const settings = await settingsDriver.get();
 
+        if (isVerbose()) console.timeLog(`[${name}] Sync settings`, 'Load');
+
         settingsCache = await postLoadFn(settings);
+
+        if (isVerbose()) console.timeEnd(`[${name}] Sync settings`);
     }
 
     const setupListeners = async () => {
@@ -145,7 +140,7 @@ export const createSettings = <T extends BaseSettings>({
             const migratedSettings = await migrateFunction(currentSettings);
             console.timeEnd(timeLog);
 
-            // Ensure the version is bumped correctly.
+            // Ensure the version is bumped.
             migratedSettings.version = toVersion;
 
             await updateSettings(migratedSettings, {emitEvents: false});
@@ -164,6 +159,8 @@ export const createSettings = <T extends BaseSettings>({
     }
 
     const updateSettings = async (settingToUpdate: T, config: UpdateSettingsConfig = {emitEvents: true}): Promise<T> => {
+        if (isVerbose()) console.time(`[${name}] Update settings`);
+
         let preUpdate = '';
         if (isDebug()) {
             preUpdate = JSON.stringify(getSettings(), null, 2);
@@ -171,9 +168,15 @@ export const createSettings = <T extends BaseSettings>({
 
         const formattedSettings = await preSaveFn(settingToUpdate);
 
+        if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'preSave');
+
         await settingsDriver.set(formattedSettings);
 
+        if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'save');
+
         await syncSettings();
+
+        if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'sync');
 
         const updatedSettings = getSettings();
 
@@ -189,6 +192,8 @@ export const createSettings = <T extends BaseSettings>({
             console.log(updateDiff);
         }
 
+        if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'pre-emit');
+
         if (config.emitEvents) {
             eventHandler.emit<SettingsUpdatedEventData<T>>(settingsUpdatedEventName, {
                 settingName: name,
@@ -196,6 +201,8 @@ export const createSettings = <T extends BaseSettings>({
                 type: 'update',
             });
         }
+
+        if (isVerbose()) console.timeEnd(`[${name}] Update settings`);
 
         return updatedSettings;
     }
