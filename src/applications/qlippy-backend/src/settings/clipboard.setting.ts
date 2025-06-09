@@ -1,12 +1,11 @@
 import {ClipboardSettings} from "qlippy-common/src/settings/clipboard.settings.types";
 import {createSettings, toMigrations} from "backend-essentials/src/settings/createSettings";
-import {migrationToSqlite} from "backend-essentials/src/settings/migrations/migration-to-sqlite";
 
 export const clipboardSettings = createSettings<ClipboardSettings>({
     name: 'clipboard',
     defaultSettings: {
-        version: 3,
-        driver: 'sqlite',
+        version: 2,
+        driver: 'file',
         history: [],
     },
     migrations: toMigrations([
@@ -25,7 +24,6 @@ export const clipboardSettings = createSettings<ClipboardSettings>({
                     }))
                 }
             }
-        },
-        migrationToSqlite({fromVersion: 2, toVersion: 3})
+        }
     ])
 });

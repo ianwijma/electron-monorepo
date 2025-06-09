@@ -17,7 +17,6 @@ import {
 import diff from 'git-diff'
 import {isDebug} from "../utilities/isDebug";
 import {FileSettingsDriver} from "./drivers/fileSettingsDriver";
-import {DatabaseSettingsDriver} from "./drivers/databaseSettingDriver";
 
 export type SettingsName = string;
 
@@ -65,8 +64,6 @@ const getSettingsDriver = <T extends BaseSettings>(defaultSettings: T) => {
     switch (driver) {
         case "file":
             return FileSettingsDriver({defaultSettings});
-        case "sqlite":
-            return DatabaseSettingsDriver({defaultSettings});
         default:
             throw new Error(`Unknown driver: ${driver}`);
     }
