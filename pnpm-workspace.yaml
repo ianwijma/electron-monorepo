@@ -1,6 +1,7 @@
 packages:
   - src/packages/*
   - src/applications/*
+  - src/starter/*
 
 onlyBuiltDependencies:
   - electron
