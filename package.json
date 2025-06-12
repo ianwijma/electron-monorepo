@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "graph": "npx nx graph",
-    "blank": "node ./bin/dev.mjs --app=qile",
-    "blank-dev": "node ./bin/build.mjs --quick --app=qile",
-    "blank-prod": "node ./bin/build.mjs --app=qile",
+    "blank": "node ./bin/dev.mjs --app=blank",
+    "blank-dev": "node ./bin/build.mjs --quick --app=blank",
+    "blank-prod": "node ./bin/build.mjs --app=blank",
     "qlippy": "node ./bin/dev.mjs --app=qlippy",
     "qlippy-dev": "node ./bin/build.mjs --quick --app=qlippy",
     "qlippy-prod": "node ./bin/build.mjs --app=qlippy",

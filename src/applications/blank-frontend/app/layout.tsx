@@ -21,10 +21,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: {
-        template: '%s | Qlippy',
-        default: 'Qlippy', // a default is required when creating a template
+        template: '%s | __Blank__',
+        default: '__Blank__', // a default is required when creating a template
     },
-    description: "Qlip That!",
+    description: "__Blank__",
 };
 
 export default function RootLayout({

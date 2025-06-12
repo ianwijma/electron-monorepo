@@ -1,5 +1,5 @@
 {
-  "name": "qlippy-frontend",
+  "name": "blank-frontend",
   "private": true,
   "scripts": {
     "dev": "next dev -p 9100 --turbopack",
@@ -13,10 +13,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@next/env": "^15.1.3",
-    "qlippy-common": "workspace:*",
+    "blank-common": "workspace:*",
     "frontend-essentials": "workspace:*",
     "common-essentials": "workspace:*",
-    "nanoid": "^5.0.9",
     "next": "15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

@@ -1,5 +1,5 @@
 {
-  "name": "qlippy-common",
+  "name": "blank-common",
   "scripts": {},
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

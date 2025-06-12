@@ -4,7 +4,7 @@ import {useListen} from "frontend-essentials/src/hooks/useEventHandler";
 import {
     buttonClickedEventName,
     type ButtonClickedEventData
-} from 'qlippy-common/src/events/buttonClicked.event'
+} from 'blank-common/src/events/buttonClicked.event'
 import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
 
 export const useButtonClick = () => {

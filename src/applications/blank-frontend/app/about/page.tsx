@@ -1,8 +1,8 @@
 'use client';
 
-import {version} from 'qlippy-common/version.json';
+import {version} from 'blank-common/version.json';
 import {AboutWindow} from 'frontend-essentials/src/components/about'
 
 export default function AboutPage() {
-    return <AboutWindow applicationName={'Qlippy'} version={version} />
+    return <AboutWindow applicationName={'__Blank__'} version={version}/>
 }

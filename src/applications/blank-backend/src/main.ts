@@ -1,35 +1,20 @@
 import {app} from 'electron';
 import started from 'electron-squirrel-startup';
 import {defaultTray} from "./tray/defaultTray";
-import {startupArguments} from "backend-essentials/src/utilities/startupArguments";
 import {isDev} from "backend-essentials/src/utilities/isDev";
-import './windows/dialog.window';
-import {resetAllSettings} from "./utils/resetAllSettings";
 import {aboutWindow} from "./windows/about.window";
-import {keyboardSettings} from "./settings/keyboard.setting";
-import {keyboardShortcuts} from "./utils/keyboard-shortcuts";
 import {clipboardHistoryWindow} from "./windows/clipboard-history.window";
 import {fileProtocol} from "backend-essentials/src/files/fileProtocol";
-import {clipboardHandleChange} from "./clipboard/handle-change";
-import {clipboardHandleClear} from "./clipboard/handle-clear";
-import {clipboardHandleRestore} from "./clipboard/handle-restore";
-import {clipboardChangeEmitter} from "./clipboard/change-emitter";
-import {clipboardSettings} from "./settings/clipboard.setting";
-import {clipboardHandleOpen} from "./clipboard/handle-open";
 import {settingsManager} from "backend-essentials/src/settings/settingsManager";
-import {settingsWindow} from "./windows/settings.window";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
     app.quit();
 }
 
-// Add the manager to the settings manager,
-settingsManager.addSettings(keyboardSettings, clipboardSettings);
-
 let isSingleInstance = app.requestSingleInstanceLock({isDev: isDev()});
 if (!isSingleInstance) {
-    console.log('Qlippy can only be opened once.')
+    console.log('__Blank__ can only be opened once.')
     app.quit();
 } else {
     const onBeforeQuit = () => {
@@ -43,24 +28,11 @@ if (!isSingleInstance) {
         // Settings
         await settingsManager.initialize();
 
-        if (startupArguments.reset) {
-            await resetAllSettings();
-        }
-
-        // Setup Clipboard Change Processes
-        await clipboardChangeEmitter.initialize();
-        await clipboardHandleChange.initialize();
-        await clipboardHandleClear.initialize();
-        await clipboardHandleRestore.initialize();
-        await clipboardHandleOpen.initialize();
-
         // Background Processes
-        await keyboardShortcuts.initialize();
         await fileProtocol.initialize();
 
         // Windows
         await clipboardHistoryWindow.initialize();
-        await settingsWindow.initialize();
         await aboutWindow.initialize();
 
         // Tray

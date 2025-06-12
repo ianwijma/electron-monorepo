@@ -11,8 +11,8 @@ import {mainConfig} from './webpack.main.config';
 import {preloadConfig} from './webpack.preload.config';
 import MakerDMG from "@electron-forge/maker-dmg";
 
-const NAME = 'Qlippy';
-const DESCRIPTION = 'Qlip That!';
+const NAME = '__Blank__';
+const DESCRIPTION = '__Blank__';
 const AUTHOR = 'Ian Wijma';
 
 const config: ForgeConfig = {

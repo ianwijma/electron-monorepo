@@ -1,9 +1,9 @@
 {
-  "name": "qlippy-backend",
+  "name": "blank-backend",
   "version": "0.0.34",
-  "description": "Qlip that!",
+  "description": "__Blank__",
   "main": ".webpack/main",
-  "productName": "qlippy",
+  "productName": "blank",
   "scripts": {
     "dev": "nodemon",
     "dev-reset": "npm run start --reset",
@@ -11,7 +11,7 @@
     "package": "electron-forge package",
     "build": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx "
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.6.1",
@@ -47,10 +47,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "qlippy-common": "workspace:*",
+    "blank-common": "workspace:*",
     "electron-squirrel-startup": "^1.0.1",
-    "nanoid": "^5.0.9",
-    "puppeteer": "^24.3.0",
     "backend-essentials": "workspace:*",
     "common-essentials": "workspace:*"
   }

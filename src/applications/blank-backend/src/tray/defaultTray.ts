@@ -1,10 +1,6 @@
 import {app, Menu, nativeImage, Tray, MenuItemConstructorOptions} from "electron";
-import {isDev} from "backend-essentials/src/utilities/isDev";
-import {resetAllSettings} from "../utils/resetAllSettings";
-import {defaultLogo} from 'qlippy-common/src/logos'
+import {defaultLogo} from 'blank-common/src/logos'
 import {aboutWindow} from "../windows/about.window";
-import {clipboardHistoryWindow} from "../windows/clipboard-history.window";
-import {settingsWindow} from "../windows/settings.window";
 
 export const defaultTray = {
     async initialize() {
@@ -12,38 +8,14 @@ export const defaultTray = {
         const icon = nativeImage.createFromDataURL(defaultLogo)
         const tray = new Tray(icon);
 
-        tray.setToolTip('Qlippy');
-
-        let devItems: MenuItemConstructorOptions[] = [
-            {
-                type: 'separator',
-            },
-            {
-                label: 'Reset',
-                type: 'normal',
-                click: () => resetAllSettings()
-            },
-        ]
-
-        let settingsItems: MenuItemConstructorOptions[] = []
+        tray.setToolTip('__Blank__');
 
         const contextMenu = Menu.buildFromTemplate([
-            {
-                label: 'Show',
-                type: 'normal',
-                click: () => clipboardHistoryWindow.toggle()
-            },
-            {
-                label: 'Settings',
-                type: 'normal',
-                click: () => settingsWindow.open()
-            },
             {
                 label: 'About',
                 type: 'normal',
                 click: () => aboutWindow.open()
             },
-            ...isDev() ? devItems : [],
             {
                 type: 'separator',
             },
