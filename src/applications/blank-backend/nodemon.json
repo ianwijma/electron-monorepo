@@ -1,0 +1,11 @@
+{
+  "watch": [
+    "src",
+    "../qlippy-common",
+    "../../packages/backend-essentials",
+    "../../packages/common-essentials"
+  ],
+  "ext": "ts",
+  "delay": 500,
+  "exec": "npm run start"
+}
