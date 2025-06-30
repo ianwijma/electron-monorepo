@@ -1,7 +1,7 @@
 import "zx/globals"
 import path from 'path'
 import fs from 'fs/promises'
-import {setupProject, safeRun} from './utils.mjs'
+import {safeRun, setupProject} from './utils.mjs'
 
 const TEST_EXTENSIONS = ['.test.ts', '.test.tsx', '.test.js', '.test.jsx']
 
@@ -31,7 +31,7 @@ const findTestFiles = async (dir) => {
 }
 
 const createJestConfig = (projectDir, testFiles) => {
-    const config = {
+    return {
         preset: 'ts-jest',
         testEnvironment: 'node',
         roots: [projectDir],
@@ -52,12 +52,11 @@ const createJestConfig = (projectDir, testFiles) => {
         testPathIgnorePatterns: ['/node_modules/'],
         transformIgnorePatterns: ['node_modules/(?!(.*\\.mjs$))'],
     }
-    return config
 }
 
 const runTestsForDirectory = async (dir, projectName) => {
     const testFiles = await findTestFiles(dir)
-    
+
     if (testFiles.length === 0) {
         console.log(`No test files found in ${projectName}`)
         return
@@ -72,13 +71,13 @@ const runTestsForDirectory = async (dir, projectName) => {
     // Create temporary Jest config
     const jestConfig = createJestConfig(dir, testFiles)
     const configPath = path.join(dir, 'jest.config.temp.json')
-    
+
     try {
         await fs.writeFile(configPath, JSON.stringify(jestConfig, null, 2))
-        
+
         console.log(`Running tests for ${projectName}...`)
         await $`cd ${dir} && npx jest --config jest.config.temp.json`
-        
+
     } catch (error) {
         console.error(`Error running tests for ${projectName}:`, error.message)
     } finally {
