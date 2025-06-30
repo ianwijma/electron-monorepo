@@ -7,15 +7,22 @@
     "qlippy-dev": "node ./bin/build.mjs --quick --app=qlippy",
     "qlippy-prod": "node ./bin/build.mjs --app=qlippy",
     "qlippy-benchmark": "node ./bin/benchmark.mjs --app=qlippy",
+    "qlippy-test": "node ./bin/test.mjs --app=qlippy",
     "qommand": "node ./bin/dev.mjs --app=qommand",
     "qommand-dev": "node ./bin/build.mjs --quick --app=qommand",
     "qommand-prod": "node ./bin/build.mjs --app=qommand",
-    "qommand-benchmark": "node ./bin/benchmark.mjs --app=qommand"
+    "qommand-benchmark": "node ./bin/benchmark.mjs --app=qommand",
+    "qommand-test": "node ./bin/test.mjs --app=qommand",
+    "test": "node ./bin/test.mjs"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "concurrently": "^9.1.0",
+    "jest": "^30.0.3",
+    "jest-environment-node": "^30.0.2",
     "lerna": "^8.2.2",
     "tinybench": "^4.0.1",
+    "ts-jest": "^29.4.0",
     "zx": "^8.2.4"
   }
 }
