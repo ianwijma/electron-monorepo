@@ -4,7 +4,7 @@
 - **Root commands**: `npm run qlippy`, `npm run qommand` (dev), `npm run qlippy-dev`, `npm run qommand-dev` (quick build)
 - **Frontend (qlippy-frontend)**: `npm run dev`, `npm run build`, `npm run lint`
 - **Backend (qommand-backend)**: `npm run dev`, `npm run start`, `npm run build`, `npm run lint`
-- **Single test**: No test framework configured - check individual package.json files
+- **Testing**: `npm run qlippy-test`, `npm run qommand-test`, or `npm run test -- --app=<appname>` (targets *.test.ts, *.test.tsx files)
 
 ## Code Style Guidelines
 - **TypeScript**: Use TypeScript with `strict: false` configuration
