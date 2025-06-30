@@ -31,11 +31,11 @@ const findTestFiles = async (dir) => {
 }
 
 const createJestConfig = (projectDir, testFiles) => {
-    return {
+    const config = {
         preset: 'ts-jest',
         testEnvironment: 'node',
         roots: [projectDir],
-        testMatch: testFiles.map(file => `**/${path.basename(file)}`),
+        testMatch: testFiles.map(file => `**/${path.relative(projectDir, file)}`),
         moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
         transform: {
             '^.+\\.(ts|tsx)$': 'ts-jest',
@@ -52,6 +52,7 @@ const createJestConfig = (projectDir, testFiles) => {
         testPathIgnorePatterns: ['/node_modules/'],
         transformIgnorePatterns: ['node_modules/(?!(.*\\.mjs$))'],
     }
+    return config
 }
 
 const runTestsForDirectory = async (dir, projectName) => {
