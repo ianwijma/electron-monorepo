@@ -35,7 +35,7 @@ const createJestConfig = (projectDir, testFiles) => {
         preset: 'ts-jest',
         testEnvironment: 'node',
         roots: [projectDir],
-        testMatch: testFiles.map(file => path.relative(projectDir, file)),
+        testMatch: testFiles.map(file => `**/${path.basename(file)}`),
         moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
         transform: {
             '^.+\\.(ts|tsx)$': 'ts-jest',
@@ -46,9 +46,11 @@ const createJestConfig = (projectDir, testFiles) => {
             '!**/node_modules/**',
             '!**/*.test.{ts,tsx}',
         ],
-        moduleNameMapping: {
+        moduleNameMapper: {
             '^@/(.*)$': '<rootDir>/src/$1',
         },
+        testPathIgnorePatterns: ['/node_modules/'],
+        transformIgnorePatterns: ['node_modules/(?!(.*\\.mjs$))'],
     }
     return config
 }
