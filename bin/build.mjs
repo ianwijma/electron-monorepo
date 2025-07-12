@@ -6,7 +6,7 @@ import {
     writePackageJsonWithRestore
 } from "./utils.mjs";
 
-await safeRun(async ({ addRevert }) => {
+await safeRun(async ({addRevert}) => {
     const {app, quick} = argv;
 
     const {BACKEND_DIR, FRONTEND_DIR, BACKEND_PACKAGE_JSON} = await setupProject(app);
@@ -16,9 +16,11 @@ await safeRun(async ({ addRevert }) => {
     const commitHash = stdout.trim();
 
     // Add hash to the version in the backend package json file.
-    const currentVersion = await readPackageJsonKey(BACKEND_PACKAGE_JSON,'version');
+    const currentVersion = await readPackageJsonKey(BACKEND_PACKAGE_JSON, 'version');
     const restoreVersion = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'version', `${currentVersion}.${commitHash}`);
     addRevert(restoreVersion);
+    const restoreName = await writePackageJsonWithRestore(BACKEND_PACKAGE_JSON, 'name', app);
+    addRevert(restoreName);
 
     echo`~~~ Cleaning up previous build files...`
     await Promise.allSettled([
@@ -47,7 +49,7 @@ await safeRun(async ({ addRevert }) => {
     }, 100)
 
     echo`~~~ Build backend...`
-    await $`lerna run build --scope=${app}-backend`;
+    await $`lerna run build --scope=${app}`; // Actual scope it `${app}-backend`, but it was renamed above.
 
     clearInterval(feInterval);
 })

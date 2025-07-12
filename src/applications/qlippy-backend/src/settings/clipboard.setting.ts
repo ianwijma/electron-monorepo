@@ -11,6 +11,69 @@ export const clipboardSettings = createSettings<ClipboardSettings>({
         version: 3,
         history: [],
     },
+    preSaveFn: async (settings) => {
+        const {version, history} = settings;
+
+        if (version < 3) return settings;
+
+        if (isVerbose()) console.time('Clipboard pre save');
+
+        const historyItems = await Promise.all(history.map(async (item) => {
+            if (item.type === 'text' && item.textPath) {
+                delete item.text;
+            }
+
+            if (item.type === 'html' && item.htmlPath && item.htmlPath) {
+                delete item.html;
+                delete item.htmlText;
+            }
+
+            return item;
+        }));
+
+        if (isVerbose()) console.timeEnd('Clipboard pre save');
+
+        return {
+            ...settings,
+            history: historyItems
+        }
+    },
+    postLoadFn: async (settings) => {
+        const {version, history} = settings;
+
+        if (version < 3) return settings;
+
+        if (isVerbose()) console.time('Clipboard post load');
+
+        const historyItems = await Promise.all(history.map(async (item) => {
+            try {
+                if (item.type === 'text' && item.textPath) {
+                    item.text = await readStringFile(item.textPath);
+                }
+
+                if (item.type === 'html' && item.htmlPath && item.htmlTextPath) {
+                    const [html, text] = await Promise.all([
+                        readStringFile(item.htmlPath),
+                        readStringFile(item.htmlTextPath),
+                    ]);
+
+                    item.html = html;
+                    item.htmlText = text;
+                }
+            } catch (error) {
+                console.error(`Failed to load data for clipboard item ${item.id}`, {error});
+            }
+
+            return item;
+        }));
+
+        if (isVerbose()) console.timeEnd('Clipboard post load');
+
+        return {
+            ...settings,
+            history: historyItems
+        }
+    },
     migrations: toMigrations([
         {
             fromVersion: 1,
@@ -40,19 +103,28 @@ export const clipboardSettings = createSettings<ClipboardSettings>({
                     history: await Promise.all(history.map(async (item) => {
                         if (item.type === 'html') {
                             const htmlPath = pathJoin(CLIPBOARD_STORAGE_PATH, `${item.id}.html.txt`);
-                            if (!await fileExists(htmlPath)) {
+                            const currentHtmlPath = await fileExists(htmlPath);
+                            if (currentHtmlPath) {
+                                item.htmlPath = currentHtmlPath
+                            } else {
                                 item.htmlPath = await writeFile(htmlPath, item.html);
                             }
 
                             const textPath = pathJoin(CLIPBOARD_STORAGE_PATH, `${item.id}.text.txt`);
-                            if (!await fileExists(textPath)) {
+                            const currentTextPath = await fileExists(textPath);
+                            if (currentTextPath) {
+                                item.htmlTextPath = currentTextPath;
+                            } else {
                                 item.htmlTextPath = await writeFile(textPath, item.htmlText);
                             }
                         }
 
                         if (item.type === 'text') {
                             const textPath = pathJoin(CLIPBOARD_STORAGE_PATH, `${item.id}.text.txt`);
-                            if (!await fileExists(textPath)) {
+                            const currentTextPath = await fileExists(textPath);
+                            if (currentTextPath) {
+                                item.textPath = currentTextPath;
+                            } else {
                                 item.textPath = await writeFile(textPath, item.text);
                             }
                         }
@@ -63,63 +135,4 @@ export const clipboardSettings = createSettings<ClipboardSettings>({
             }
         }
     ]),
-    preSaveFn: async (settings) => {
-        const {version, history} = settings;
-
-        if (version < 3) return settings;
-
-        if (isVerbose()) console.time('Clipboard pre save');
-
-        const historyItems = await Promise.all(history.map(async (item) => {
-            if (item.type === 'text') {
-                delete item.text;
-            }
-
-            if (item.type === 'html') {
-                delete item.html;
-                delete item.htmlText;
-            }
-
-            return item;
-        }));
-
-        if (isVerbose()) console.timeEnd('Clipboard pre save');
-
-        return {
-            ...settings,
-            history: historyItems
-        }
-    },
-    postLoadFn: async (settings) => {
-        const {version, history} = settings;
-
-        if (version < 3) return settings;
-
-        if (isVerbose()) console.time('Clipboard post load');
-
-        const historyItems = await Promise.all(history.map(async (item) => {
-            if (item.type === 'text' && item.textPath) {
-                item.text = await readStringFile(item.textPath);
-            }
-
-            if (item.type === 'html' && item.htmlPath && item.htmlTextPath) {
-                const [html, text] = await Promise.all([
-                    readStringFile(item.htmlPath),
-                    readStringFile(item.htmlTextPath),
-                ]);
-
-                item.html = html;
-                item.htmlText = text;
-            }
-
-            return item;
-        }));
-
-        if (isVerbose()) console.timeEnd('Clipboard post load');
-
-        return {
-            ...settings,
-            history: historyItems
-        }
-    }
 });
