@@ -13,7 +13,7 @@ const DEFAULT_CLIPBOARD_KEYS = [
 export const keyboardSettings = createSettings<KeyboardSettings>({
     name: 'keyboard',
     defaultSettings: {
-        version: 3,
+        version: 2,
         shortcuts: {
             [DEFAULT_CLIPBOARD_KEYS.join('+')]: {
                 shortcut: DEFAULT_CLIPBOARD_KEYS.join('+'),

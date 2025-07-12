@@ -2,7 +2,6 @@ import {BaseSettingsDriver, BaseSettingsDriverProps} from "./types";
 import {BaseSettings} from "common-essentials/src/types/settings.types";
 import {copyFile, fileExists, readYamlFile, writeYamlFile} from "../../files/files";
 
-// @ts-ignore
 export const FileSettingsDriver: BaseSettingsDriver = <T extends BaseSettings>(props: BaseSettingsDriverProps<T>) => {
     const {defaultSettings} = props;
     const {name} = defaultSettings;
@@ -19,7 +18,6 @@ export const FileSettingsDriver: BaseSettingsDriver = <T extends BaseSettings>(p
             return readYamlFile<T>(filePath);
         },
         set: async (settings) => {
-            // @ts-ignore
             await writeYamlFile<T>(filePath, settings);
         },
         backup: async ({name = 'backup'} = {}) => {

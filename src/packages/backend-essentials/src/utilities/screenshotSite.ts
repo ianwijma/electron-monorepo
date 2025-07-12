@@ -5,14 +5,14 @@ const createScreenshotUrl = () => {
     let browserCache: undefined | Browser;
     const initializeBrowser = async (): Promise<Browser> => {
         if (!browserCache) {
-            browserCache = await puppeteer.launch({ defaultViewport: { width: 1280, height: 720 } });
+            browserCache = await puppeteer.launch({defaultViewport: {width: 1280, height: 720}});
         }
 
         return browserCache;
     };
 
     return {
-        screenshot: async ({url, type}: {url: URL, type: 'png' | 'jpeg' | 'webp'}): Promise<Buffer> => {
+        screenshot: async ({url, type}: { url: URL, type: 'png' | 'jpeg' | 'webp' }): Promise<Buffer | undefined> => {
             const browser = await initializeBrowser();
 
             const page = await browser.newPage();
@@ -20,7 +20,7 @@ const createScreenshotUrl = () => {
             page.goto(url.toString()).catch((err: Error) => console.error('Failed to redirect page', {err}));
 
             try {
-                await page.waitForNetworkIdle({idleTime: 250, timeout: 1000 * 10 /* ms > s */ });
+                await page.waitForNetworkIdle({idleTime: 250, timeout: 1000 * 10 /* ms > s */});
             } catch (error) {
                 console.error('Screenshot timed out');
             }
