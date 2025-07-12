@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@types/git-diff": "^2.0.7",
-    "electron": "34.1.0",
-    "@types/yargs-parser": "^21.0.3"
+    "@types/yargs-parser": "^21.0.3",
+    "electron": "34.1.0"
   }
 }

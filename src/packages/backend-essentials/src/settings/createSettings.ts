@@ -1,4 +1,3 @@
-import {copyFile, fileExists, readYamlFile, writeYamlFile} from "../files/files";
 import {BaseSettings, SettingsVersion} from "common-essentials/src/types/settings.types";
 import {responseHandler} from "../utilities/responseHandler";
 import {eventHandler} from "../utilities/eventHandler";
@@ -17,6 +16,8 @@ import {
 } from '../../../common-essentials/src/requests/settings.request'
 import diff from 'git-diff'
 import {isDebug} from "../utilities/isDebug";
+import {FileSettingsDriver} from "./drivers/fileSettingsDriver";
+import {isVerbose} from "../utilities/isVerbose";
 
 export type SettingsName = string;
 
@@ -66,15 +67,18 @@ export const createSettings = <T extends BaseSettings>({
                                                            migrations = {},
                                                        }: CreateSettingParams<T>): CreateSettingReturn<T> => {
     const actuallyDefaultSettings: T = {name, ...defaultSettings} as T;
-    const settingsFilePath = `settings/${name}.yaml`;
+    const settingsDriver = FileSettingsDriver({defaultSettings: actuallyDefaultSettings});
     let settingsCache: T;
 
     const isInitialized = () => {
         if (!settingsCache) throw new Error(`Setting ${name} was not initialized`);
+
     }
 
     const initialize = async () => {
         console.info(`Initializing ${name} settings`);
+
+        await settingsDriver.init();
 
         await syncSettings();
 
@@ -90,14 +94,14 @@ export const createSettings = <T extends BaseSettings>({
     };
 
     const syncSettings = async () => {
-        const settingsFileExists = await fileExists(settingsFilePath);
-        if (!settingsFileExists) {
-            await writeYamlFile<T>(settingsFilePath, actuallyDefaultSettings);
-        }
+        if (isVerbose()) console.time(`[${name}] Sync settings`);
+        const settings = await settingsDriver.get();
 
-        const settings = await readYamlFile<T>(settingsFilePath);
+        if (isVerbose()) console.timeLog(`[${name}] Sync settings`, 'Load');
 
         settingsCache = await postLoadFn(settings);
+
+        if (isVerbose()) console.timeEnd(`[${name}] Sync settings`);
     }
 
     const setupListeners = async () => {
@@ -121,15 +125,10 @@ export const createSettings = <T extends BaseSettings>({
     const performMigration = async () => {
         let currentSettings = getSettings();
 
-        // Backup locations
-        const dateNow = Date.now();
-        const backupSettingsFilePath = `${settingsFilePath}.backup_${dateNow}`;
-        const debugSettingsFilePath = `${settingsFilePath}.backup_${dateNow}`;
-
         const isGoingToMigrate = currentSettings.version in migrations;
         if (isGoingToMigrate) {
-            console.log(`We're about to perform a migration for the ${name} setting, backing up the current settings to ${backupSettingsFilePath}`);
-            await copyFile(settingsFilePath, backupSettingsFilePath);
+            console.log(`We're about to perform a migration for the ${name} setting, backing up the current settings`);
+            await settingsDriver.backup();
         }
 
         while (currentSettings.version in migrations) {
@@ -141,7 +140,7 @@ export const createSettings = <T extends BaseSettings>({
             const migratedSettings = await migrateFunction(currentSettings);
             console.timeEnd(timeLog);
 
-            // Ensure the version is bumped correctly.
+            // Ensure the version is bumped.
             migratedSettings.version = toVersion;
 
             await updateSettings(migratedSettings, {emitEvents: false});
@@ -151,7 +150,7 @@ export const createSettings = <T extends BaseSettings>({
 
         if (isGoingToMigrate) {
             // Backing up the post-migration settings for debugging migration errors.
-            await copyFile(settingsFilePath, debugSettingsFilePath);
+            await settingsDriver.backup({name: 'debug'});
         }
     };
 
@@ -160,6 +159,8 @@ export const createSettings = <T extends BaseSettings>({
     }
 
     const updateSettings = async (settingToUpdate: T, config: UpdateSettingsConfig = {emitEvents: true}): Promise<T> => {
+        if (isVerbose()) console.time(`[${name}] Update settings`);
+
         let preUpdate = '';
         if (isDebug()) {
             preUpdate = JSON.stringify(getSettings(), null, 2);
@@ -167,9 +168,15 @@ export const createSettings = <T extends BaseSettings>({
 
         const formattedSettings = await preSaveFn(settingToUpdate);
 
-        await writeYamlFile<T>(settingsFilePath, formattedSettings);
+        if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'preSave');
+
+        await settingsDriver.set(formattedSettings);
+
+        if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'save');
 
         await syncSettings();
+
+        if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'sync');
 
         const updatedSettings = getSettings();
 
@@ -185,6 +192,8 @@ export const createSettings = <T extends BaseSettings>({
             console.log(updateDiff);
         }
 
+        if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'pre-emit');
+
         if (config.emitEvents) {
             eventHandler.emit<SettingsUpdatedEventData<T>>(settingsUpdatedEventName, {
                 settingName: name,
@@ -193,11 +202,13 @@ export const createSettings = <T extends BaseSettings>({
             });
         }
 
+        if (isVerbose()) console.timeEnd(`[${name}] Update settings`);
+
         return updatedSettings;
     }
 
     const resetSettings = async () => {
-        await writeYamlFile<T>(settingsFilePath, actuallyDefaultSettings);
+        await settingsDriver.set(actuallyDefaultSettings);
 
         await syncSettings();
 

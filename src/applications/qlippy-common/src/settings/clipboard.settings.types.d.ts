@@ -32,9 +32,11 @@ export type ImageClipboardItem = ClipboardBaseItem & ClipboardImageBase & {
 
 export type HtmlClipboardItem = ClipboardBaseItem & {
     type: 'html';
-    html: string;
+    html?: string;
+    htmlPath?: string;
     length: number;
-    htmlText: string;
+    htmlText?: string;
+    htmlTextPath?: string;
     htmlTextLength: number;
 }
 
@@ -98,7 +100,8 @@ export type ColourClipboardItem = ClipboardBaseItem & {
 
 export type TextClipboardItem = ClipboardBaseItem & {
     type: 'text';
-    text: string;
+    text?: string;
+    textPath?: string;
     length: number;
 }
 
