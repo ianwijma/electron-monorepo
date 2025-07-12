@@ -14,6 +14,9 @@ importers:
       lerna:
         specifier: ^8.2.2
         version: 8.2.2(encoding@0.1.13)
+      tinybench:
+        specifier: ^4.0.1
+        version: 4.0.1
       zx:
         specifier: ^8.2.4
         version: 8.5.3
@@ -6284,6 +6287,10 @@ packages:
 
   tiny-each-async@2.0.3:
     resolution: {integrity: sha512-5ROII7nElnAirvFn8g7H7MtpfV1daMcyfTGQwsn/x2VtyV+VPiO5CjReCJtWLvoKTDEDmZocf3cNPraiMnBXLA==}
+
+  tinybench@4.0.1:
+    resolution: {integrity: sha512-Nb1srn7dvzkVx0J5h1vq8f48e3TIcbrS7e/UfAI/cDSef/n8yLh4zsAEsFkfpw6auTY+ZaspEvam/xs8nMnotQ==}
+    engines: {node: '>=18.0.0'}
 
   tinyglobby@0.2.12:
     resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
@@ -14160,6 +14167,8 @@ snapshots:
 
   tiny-each-async@2.0.3:
     optional: true
+
+  tinybench@4.0.1: {}
 
   tinyglobby@0.2.12:
     dependencies:
