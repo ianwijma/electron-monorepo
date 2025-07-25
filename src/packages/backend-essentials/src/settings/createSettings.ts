@@ -18,6 +18,7 @@ import diff from 'git-diff'
 import {isDebug} from "../utilities/isDebug";
 import {FileSettingsDriver} from "./drivers/fileSettingsDriver";
 import {isVerbose} from "../utilities/isVerbose";
+import {cloneObject} from "../../../common-essentials/src/utilities/object";
 
 export type SettingsName = string;
 
@@ -90,7 +91,7 @@ export const createSettings = <T extends BaseSettings>({
     const getSettings = (): T => {
         isInitialized();
 
-        return JSON.parse(JSON.stringify(settingsCache));
+        return cloneObject(settingsCache);
     };
 
     const syncSettings = async () => {
@@ -161,12 +162,16 @@ export const createSettings = <T extends BaseSettings>({
     const updateSettings = async (settingToUpdate: T, config: UpdateSettingsConfig = {emitEvents: true}): Promise<T> => {
         if (isVerbose()) console.time(`[${name}] Update settings`);
 
+        // We're about to modify the settings to save,
+        // so we're cloning the settingToUpdate so it won't affect it outside this method.
+        const settingToUpdateClone = cloneObject(settingToUpdate);
+
         let preUpdate = '';
         if (isDebug()) {
             preUpdate = JSON.stringify(getSettings(), null, 2);
         }
 
-        const formattedSettings = await preSaveFn(settingToUpdate);
+        const formattedSettings = await preSaveFn(settingToUpdateClone);
 
         if (isVerbose()) console.timeLog(`[${name}] Update settings`, 'preSave');
 

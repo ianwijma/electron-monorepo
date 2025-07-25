@@ -59,6 +59,7 @@ const createClipboardManager = () => {
     }
 
     const restoreImage = async (imageFilePath: string) => {
+        if (isVerbose()) console.log('Restoring text to clipboard', { imageFilePath });
         if (imageFilePath) {
             const imageBuffer = await readFile(imageFilePath);
             const image = nativeImage.createFromBuffer(imageBuffer);
@@ -67,8 +68,19 @@ const createClipboardManager = () => {
     }
 
     const restoreText = (text: string) => {
+        if (isVerbose()) console.log('Restoring text to clipboard', { text });
         if (text) {
             clipboard.writeText(text, 'clipboard');
+        }
+    }
+
+    const restoreHtml = (html: string, htmlText: string) => {
+        if (isVerbose()) console.log('Restoring HTML to clipboard', { html, htmlText });
+        if (html && htmlText) {
+            clipboard.write({
+                html,
+                text: htmlText,
+            }, 'clipboard');
         }
     }
 
@@ -154,6 +166,7 @@ const createClipboardManager = () => {
         },
         restoreImage,
         restoreText,
+        restoreHtml,
         restore: async (itemToRestore: ClipboardItem): Promise<void> => {
             const settings = clipboardSettings.getSettings();
             const {history} = settings;
@@ -200,10 +213,7 @@ const createClipboardManager = () => {
                     }
                     case 'html': {
                         const {html, htmlText} = itemToRestore;
-                        clipboard.write({
-                            html,
-                            text: htmlText,
-                        }, 'clipboard');
+                        restoreHtml(html, htmlText);
                         break;
                     }
                     case 'text': {
