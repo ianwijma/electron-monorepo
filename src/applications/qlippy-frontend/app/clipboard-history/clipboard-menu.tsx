@@ -97,34 +97,39 @@ export const ClipboardMenu = memo(({show, item}: ClipboardMenuParams) => {
 
     return (
         <div
-            className='absolute w-screen h-screen bg-opacity-50 bg-black z-[9999] flex items-center justify-center transition-opacity'
+            className='absolute w-screen h-screen bg-black/30 backdrop-blur-sm z-[9999] flex items-center justify-center transition-all duration-normal'
             style={{ opacity: show ? 100 : 0, pointerEvents: show ? 'auto' : 'none' }}
         >
 
-            <div className='bg-opacity-80 bg-white w-1/2 h-1/2 text-gray-500 pl-2 pt-3'>
-                <table className='w-full'>
+            <div className='floating-panel w-[480px] max-w-[90vw] p-6 animate-scale-in'>
+                <h2 className='text-lg font-semibold text-text-primary mb-4'>Keyboard Shortcuts</h2>
+                <table className='w-full text-sm'>
                     <thead>
-                    <tr>
-                        <th className='w-1/3 text-left'>Key</th>
-                        <th className='text-left'>Description</th>
+                    <tr className='border-b border-border'>
+                        <th className='w-1/3 text-left pb-3 text-text-secondary font-medium'>Key</th>
+                        <th className='text-left pb-3 text-text-secondary font-medium'>Description</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='text-text-primary'>
                     {
                         Object.keys(keyCombos).map((key) => {
                             const description = keyCombos[key]
                             const keyArray = key.split('+');
                             return (
-                                <tr key={key}>
-                                    <td>
-                                        {keyArray.map((keyItem, index) => (
-                                            <Fragment key={keyItem}>
-                                                {!!index && ' + '}
-                                                {keyItem.toWellFormed()}
-                                            </Fragment>
-                                        ))}
+                                <tr key={key} className='border-b border-border-subtle last:border-0'>
+                                    <td className='py-3'>
+                                        <div className='flex items-center gap-1'>
+                                            {keyArray.map((keyItem, index) => (
+                                                <Fragment key={keyItem}>
+                                                    {!!index && <span className='text-text-tertiary'>+</span>}
+                                                    <kbd className='glass-capsule px-2 py-1 text-xs font-mono'>
+                                                        {keyItem.toWellFormed()}
+                                                    </kbd>
+                                                </Fragment>
+                                            ))}
+                                        </div>
                                     </td>
-                                    <td>
+                                    <td className='py-3 text-text-secondary'>
                                         {description}
                                     </td>
                                 </tr>

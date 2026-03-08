@@ -9,7 +9,9 @@ export default function DialogPage() {
     const searchParams = useSearchParams();
     const title = searchParams.get('title');
 
-    return <DefaultWindowContainer title={title} showMinimize={false} showClose={false}>
-        <DialogContent/>
-    </DefaultWindowContainer>
+    return (
+        <DefaultWindowContainer title={title} showMinimize={false} showClose={false} className='glass-regular flex items-center justify-center'>
+            <DialogContent/>
+        </DefaultWindowContainer>
+    );
 }

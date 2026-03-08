@@ -12,7 +12,6 @@ export type BaseTitlebarProps = {
     onMinimizeClicked?: () => void;
     showMaximize?: boolean;
     onMaximizeClicked?: () => void;
-    color?: string;
 }
 
 export const BaseTitlebar = ({
@@ -24,7 +23,6 @@ export const BaseTitlebar = ({
                                  onMinimizeClicked,
                                  showMaximize = true,
                                  onMaximizeClicked,
-                                 color
                              }: BaseTitlebarProps) => {
     const {minimize, close, maximize} = useWindowControls();
 
@@ -33,31 +31,31 @@ export const BaseTitlebar = ({
     onCloseClicked ??= close;
 
     return (
-        <div className='draggable flex justify-between px-1 py-1' style={{backgroundColor: color}}>
-            <div className='flex items-center gap-1'>
-                <img src={logo} alt='logo' className='w-5 h-5'/>
-                <span className='max-w-1/2 flex overflow-ellipsis overflow-hidden whitespace-nowrap'>
+        <div className='draggable glass-titlebar flex justify-between items-center px-3 py-2'>
+            <div className='flex items-center gap-2'>
+                <img src={logo} alt='logo' className='w-5 h-5 opacity-90'/>
+                <span className='max-w-1/2 font-medium text-sm text-text-primary flex overflow-ellipsis overflow-hidden whitespace-nowrap'>
                     {title}
                 </span>
             </div>
             <div className='flex gap-2'>
                 {
                     showMaximize && (
-                        <TitleBarButton onClick={onMaximizeClicked}>
+                        <TitleBarButton onClick={onMaximizeClicked} variant='maximize'>
                             <FontAwesomeIcon icon={faExpand} size='xs'/>
                         </TitleBarButton>
                     )
                 }
                 {
                     showMinimize && (
-                        <TitleBarButton onClick={onMinimizeClicked}>
+                        <TitleBarButton onClick={onMinimizeClicked} variant='minimize'>
                             <FontAwesomeIcon icon={faWindowMinimize} size='xs'/>
                         </TitleBarButton>
                     )
                 }
                 {
                     showClose && (
-                        <TitleBarButton onClick={onCloseClicked}>
+                        <TitleBarButton onClick={onCloseClicked} variant='close'>
                             <FontAwesomeIcon icon={faXmark} size='sm'/>
                         </TitleBarButton>
                     )
@@ -69,12 +67,18 @@ export const BaseTitlebar = ({
 
 type TitleBarButtonProps = PropsWithChildren & {
     onClick?: () => void;
+    variant?: 'close' | 'minimize' | 'maximize';
 }
 
-const TitleBarButton = ({children, onClick}: TitleBarButtonProps) => {
+const TitleBarButton = ({children, onClick, variant = 'minimize'}: TitleBarButtonProps) => {
+    const variantStyles = variant === 'close' 
+        ? 'hover:bg-tint-red hover:text-white' 
+        : 'hover:bg-surface-secondary';
+    
     return <button
         onClick={onClick}
-        className='not-draggable w-6 h-6 rounded-full flex justify-center items-center'>
+        className={`not-draggable glass-capsule w-7 h-7 flex justify-center items-center text-text-secondary transition-all duration-fast ${variantStyles}`}
+    >
         {children}
     </button>
 }

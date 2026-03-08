@@ -120,7 +120,6 @@ export default function ClipboardHistoryPage() {
                         text: `image`
                     }
                 default:
-                    // Make TS happy
                     return undefined;
             }
         }).filter(Boolean);
@@ -297,9 +296,9 @@ export default function ClipboardHistoryPage() {
 
     return (
         <DefaultWindowContainer hideTitleBar title='Qlippy'
-                                className="draggable bg-opacity-70 bg-white rounded-xl select-none relative overflow-clip">
+                                className="draggable glass-regular relative overflow-clip animate-in">
             <ClipboardMenu show={showMenu} item={selectedItem}/>
-            <div className="h-screen w-screen max-w-full grid gap-2 p-2 grid-rows-[3rem_1fr] grid-cols-[2fr_3fr]">
+            <div className="h-screen w-screen max-w-full grid gap-3 p-3 grid-rows-[3rem_1fr] grid-cols-[1fr_1.5fr]">
                 <div className="col-span-2 row-span-1">
                     <ClipboardQuery
                         query={query}
@@ -323,14 +322,14 @@ export default function ClipboardHistoryPage() {
                     />
                 </div>
                 <div
-                    className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden rounded-bl-lg relative cursor-default not-draggable">
+                    className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden rounded-xl relative cursor-default not-draggable glass-scrollbar">
                     <ClipboardList
                         history={filteredGroupedHistory}
                         selectedIndex={selectedIndex}
                         onItemClicked={handleClick}
                         onItemDoubleClick={handleDoubleClicked}/>
                 </div>
-                <div className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden">
+                <div className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden rounded-xl">
                     <ClipboardDetails item={selectedItem}/>
                 </div>
             </div>
