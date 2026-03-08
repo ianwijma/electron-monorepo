@@ -15,6 +15,7 @@ export type ClipboardQueryParams = {
     pinSelected: () => void,
     restoreSelectedImage: () => void,
     restoreSelectedText: () => void,
+    saveSelected: () => void,
     close: () => void,
     isMenuShown: boolean,
     showMenu: () => void,
@@ -48,6 +49,7 @@ export const ClipboardQuery = memo(({
                                         pinSelected,
                                         restoreSelectedImage,
                                         restoreSelectedText,
+                                        saveSelected,
                                         close,
                                         isMenuShown,
                                         showMenu,
@@ -92,6 +94,12 @@ export const ClipboardQuery = memo(({
                         restoreSelectedText();
                     }
                     break;
+                case 'KeyS':
+                    event.preventDefault();
+                    if (item?.type === 'image') {
+                        saveSelected();
+                    }
+                    break;
             }
         } else {
             switch (event.code) {
@@ -113,7 +121,7 @@ export const ClipboardQuery = memo(({
                     break;
             }
         }
-    }, [selectNext, selectPrevious, confirmSelected, close, deleteSelected, showMenu, hideMenu, openSelected, updateQuery]);
+    }, [selectNext, selectPrevious, confirmSelected, close, deleteSelected, showMenu, hideMenu, openSelected, updateQuery, saveSelected]);
     const [currentTip] = useState(getRandomTip());
 
     const handleKeyUp: KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {

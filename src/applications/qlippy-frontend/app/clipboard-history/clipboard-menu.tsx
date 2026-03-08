@@ -25,6 +25,7 @@ const fileKeyCombos = {
 
 const imageKeyCombos = {
     'Ctrl+I': 'Open the image externally',
+    'Ctrl+S': 'Save the image to disk',
 }
 
 const urlKeyCombos = {
