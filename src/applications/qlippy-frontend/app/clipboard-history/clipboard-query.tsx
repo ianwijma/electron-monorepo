@@ -1,3 +1,5 @@
+'use client';
+
 import {KeyboardEventHandler, memo, useCallback, useEffect, useRef, useState} from "react";
 import { OpenClipboardHistoryAction } from 'qlippy-common/src/events/openClipboardHistory.event'
 import {ClipboardItem} from "qlippy-common/src/settings/clipboard.settings.types";
@@ -25,10 +27,9 @@ export type ClipboardQueryParams = {
 
 const tips = [
     'Type to filter through entries...',
-    'You can switch between the input field and the type filter using tab...',
-    'You can change the type filter using the up and down arrows when it\'s highlighted...',
-    'Holding CTRL shows you the actions for the current highlighted item...',
-    'Each item has it\'s own actions...',
+    'Press up/down to navigate, Enter to restore',
+    'Hold Ctrl to see available actions',
+    'Each item has its own actions',
 ];
 
 const getRandomTip = () => {
@@ -74,12 +75,12 @@ export const ClipboardQuery = memo(({
                 case 'KeyI':
                     event.preventDefault();
                     openSelected('file');
-                    hideMenu(); // useful during development, in production focus loss closes the window
+                    hideMenu();
                     break;
                 case 'KeyU':
                     event.preventDefault();
                     openSelected('url');
-                    hideMenu(); // useful during development, in production focus loss closes the window
+                    hideMenu();
                     break;
                 case 'KeyP':
                     event.preventDefault();
@@ -121,7 +122,7 @@ export const ClipboardQuery = memo(({
                     break;
             }
         }
-    }, [selectNext, selectPrevious, confirmSelected, close, deleteSelected, showMenu, hideMenu, openSelected, updateQuery, saveSelected]);
+    }, [query, item, selectNext, selectPrevious, confirmSelected, close, deleteSelected, showMenu, hideMenu, openSelected, updateQuery, pinSelected, restoreSelectedImage, restoreSelectedText, saveSelected]);
     const [currentTip] = useState(getRandomTip());
 
     const handleKeyUp: KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {
@@ -135,12 +136,11 @@ export const ClipboardQuery = memo(({
     const inputRef = useRef<HTMLInputElement>(null);
     const selectRef = useRef<HTMLSelectElement>(null);
 
-    // Handle blur of the input element, where select is allowed to also have focus
     useEffect(() => {
         const inputEl = inputRef.current;
         const selectEl = selectRef.current;
 
-        if (!inputRef || !selectRef) return;
+        if (!inputEl || !selectEl) return;
 
         type Focus = 'input' | 'select' | null;
         let currentFocus: Focus = null;
@@ -155,8 +155,11 @@ export const ClipboardQuery = memo(({
             }, 20);
         };
 
-        inputEl.addEventListener('focus', handleFocus('input'));
-        selectEl.addEventListener('focus', handleFocus('select'));
+        const onInputFocus = handleFocus('input');
+        const onSelectFocus = handleFocus('select');
+
+        inputEl.addEventListener('focus', onInputFocus);
+        selectEl.addEventListener('focus', onSelectFocus);
         inputEl.addEventListener('blur', handleBlur);
         selectEl.addEventListener('blur', handleBlur);
 
@@ -165,28 +168,28 @@ export const ClipboardQuery = memo(({
         }, 50);
 
         return () => {
-            inputEl.removeEventListener('focus', handleFocus('input'));
-            selectEl.removeEventListener('focus', handleFocus('select'));
+            inputEl.removeEventListener('focus', onInputFocus);
+            selectEl.removeEventListener('focus', onSelectFocus);
             inputEl.removeEventListener('blur', handleBlur);
             selectEl.removeEventListener('blur', handleBlur);
         }
-    }, [inputRef, selectRef]);
+    }, []);
 
     return (
-        <div className="h-full flex gap-1 justify-between items-center">
+        <div className="h-full flex gap-2 justify-between items-center">
             <input
                 ref={inputRef}
                 value={query}
                 onChange={(e) => updateQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
-                className='not-draggable bg-opacity-70 bg-white text-gray-500 w-4/5 h-full px-2 rounded-tl-lg'
+                className='not-draggable glass-input flex-1 h-full px-4 text-sm'
                 placeholder={currentTip}
-                suppressHydrationWarning // Because the placeholder is random, we're getting hydration warnings.
+                suppressHydrationWarning
             />
             <select
                 ref={selectRef}
-                className='not-draggable bg-opacity-70 bg-white text-gray-500 w-1/5 h-full rounded-tr-lg'
+                className='not-draggable glass-input w-32 h-full px-3 text-sm cursor-pointer'
                 value={typeFilter}
                 onChange={(e) => updateTypeFilter(e.target.value)}
             >

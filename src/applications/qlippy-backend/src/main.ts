@@ -17,6 +17,8 @@ import {clipboardChangeEmitter} from "./clipboard/change-emitter";
 import {clipboardSettings} from "./settings/clipboard.setting";
 import {clipboardHandleOpen} from "./clipboard/handle-open";
 import {clipboardHandleSave} from "./clipboard/handle-save";
+import {clipboardHandleExport} from "./clipboard/handle-export";
+import {clipboardHandleImport} from "./clipboard/handle-import";
 import {settingsManager} from "backend-essentials/src/settings/settingsManager";
 import {settingsWindow} from "./windows/settings.window";
 
@@ -55,6 +57,8 @@ if (!isSingleInstance) {
         await clipboardHandleRestore.initialize();
         await clipboardHandleOpen.initialize();
         await clipboardHandleSave.initialize();
+        await clipboardHandleExport.initialize();
+        await clipboardHandleImport.initialize();
 
         // Background Processes
         await keyboardShortcuts.initialize();

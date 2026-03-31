@@ -1,17 +1,23 @@
+'use client';
+
 import {ClipboardItem} from "qlippy-common/src/settings/clipboard.settings.types";
 import {memo} from "react";
 import {HtmlFrame} from "../../components/htmlFrame";
 
 export type ClipboardDetailsParams = { item: ClipboardItem | undefined };
 export const ClipboardDetails = memo(({item}: ClipboardDetailsParams) => {
-    if (!item) return '';
+    if (!item) return (
+        <div className='h-full flex items-center justify-center text-text-tertiary text-sm'>
+            Select an item to view details
+        </div>
+    );
 
     return (
-        <div className='h-full not-draggable overflow-y-auto flex flex-col gap-2'>
-            <div className='h-3/5 overflow-auto bg-opacity-70 bg-white'>
+        <div className='h-full not-draggable overflow-hidden flex flex-col gap-3 p-2'>
+            <div className='flex-1 overflow-auto glass-card p-3'>
                 <Details item={item} />
             </div>
-            <div className='h-2/5 overflow-auto bg-opacity-70 bg-white rounded-br-lg'>
+            <div className='flex-1 overflow-auto glass-card p-3'>
                 <Metadata item={item} />
             </div>
         </div>
@@ -154,31 +160,32 @@ const Metadata = ({ item }: MetadataProps) => {
     const metadata= getMetadataFromType(item);
 
     return (
-        <ul className='text-gray-500 ml-2'>
+        <ul className='text-text-secondary text-sm space-y-2'>
             {Object.keys(metadata).map(key => {
                 const value: string | any = metadata[key];
 
                 if (!value || JSON.stringify(value) === '{}') return '';
 
                 return (
-                    <li key={key} className="truncate">
-                        {key}: {
-                        typeof value === 'string' ? value : value && (
-                            <ul className='ml-3'>
+                    <li key={key} className="flex flex-col gap-0.5">
+                        <span className='font-medium text-text-primary'>{key}</span>
+                        {typeof value === 'string' ? (
+                            <span className='text-text-secondary pl-2'>{value}</span>
+                        ) : value && (
+                            <ul className='pl-2 space-y-1'>
                                 {Object.keys(value).map((subKey: string) => {
                                     const subValue = value[subKey];
 
-                                    if (!value) return '';
+                                    if (!subValue) return '';
 
                                     return (
-                                        <li key={subKey}>
-                                            {subKey}: {subValue}
+                                        <li key={subKey} className='text-text-tertiary'>
+                                            <span className='font-medium'>{subKey}:</span> {subValue}
                                         </li>
                                     )
                                 })}
                             </ul>
-                        )
-                    }
+                        )}
                     </li>
                 )
             })}
@@ -193,7 +200,7 @@ const Details = ({ item }: DetailsProps) => {
     switch (type) {
         case 'text': {
             return (
-                <div className='text-gray-500 pl-1'>
+                <div className='text-text-primary text-sm whitespace-pre-wrap'>
                     {item.text}
                 </div>
             )
@@ -207,11 +214,11 @@ const Details = ({ item }: DetailsProps) => {
             const {imageFilePath} = item;
             if (imageFilePath) {
                 return (
-                    <div className='w-full h-full'>
+                    <div className='w-full h-full flex items-center justify-center'>
                         <img
                             src={`app://${item.imageFilePath}`}
                             alt='Clipboard url screenshot'
-                            className='w-full'
+                            className='max-w-full max-h-full rounded-lg shadow-md'
                             draggable={false}
                         />
                     </div>
@@ -219,32 +226,32 @@ const Details = ({ item }: DetailsProps) => {
             }
 
             return (
-                <div className='text-gray-500 pl-1'>
+                <div className='text-text-tertiary text-sm flex items-center justify-center h-full'>
                     Screenshotting the site...
                 </div>
             )
         }
         case 'path': {
             return (
-                <div className='text-gray-500 pl-1'>
+                <div className='text-text-primary text-sm'>
                     {item.path}
                 </div>
             )
         }
         case 'colour': {
             return (
-                <div style={{ backgroundColor: item.colour }} className='w-full h-full'></div>
+                <div className='w-full h-full flex items-center justify-center rounded-lg' style={{ backgroundColor: item.colour }}></div>
             )
         }
         case 'image': {
             const {imageFilePath} = item;
             if (imageFilePath) {
                 return (
-                    <div className='w-full h-full'>
+                    <div className='w-full h-full flex items-center justify-center'>
                         <img
                             src={`app://${item.imageFilePath}`}
-                            alt='Clipboard url screenshot'
-                            className='w-full'
+                            alt='Clipboard image content'
+                            className='max-w-full max-h-full rounded-lg shadow-md'
                             draggable="false"
                         />
                     </div>
@@ -252,14 +259,14 @@ const Details = ({ item }: DetailsProps) => {
             }
 
             return (
-                <div className='text-gray-500 pl-1'>
+                <div className='text-text-tertiary text-sm flex items-center justify-center h-full'>
                     Saving the image...
                 </div>
             )
         }
         default: {
             return (
-                <div className='text-gray-500 pl-1'>
+                <div className='text-text-tertiary text-sm flex items-center justify-center h-full'>
                     No preview available for {type}
                 </div>
             )

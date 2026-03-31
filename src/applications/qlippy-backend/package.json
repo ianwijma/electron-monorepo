@@ -1,6 +1,6 @@
 {
   "name": "qlippy-backend",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "Qlip that!",
   "main": ".webpack/main",
   "productName": "qlippy",
@@ -25,6 +25,8 @@
     "@electron-forge/plugin-webpack": "^7.6.1",
     "@electron/fuses": "^1.8.0",
     "@types/electron-squirrel-startup": "^1.0.2",
+    "@types/archiver": "^6.0.3",
+    "@types/yauzl": "^2.10.3",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
@@ -52,6 +54,8 @@
     "nanoid": "^5.0.9",
     "puppeteer": "^24.3.0",
     "backend-essentials": "workspace:*",
-    "common-essentials": "workspace:*"
+    "common-essentials": "workspace:*",
+    "archiver": "^7.0.1",
+    "yauzl": "^3.2.0"
   }
 }

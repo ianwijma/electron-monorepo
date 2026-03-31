@@ -12,12 +12,24 @@ export const DialogContent = () => {
     const handleConfirm = () => emitButtonClick(`confirm`, {confirmed: true});
 
     return (
-        <>
-            <span>
+        <div className='floating-panel p-6 w-[400px] max-w-[90vw] animate-scale-in'>
+            <p className='text-text-primary text-center mb-6 break-words overflow-wrap-anywhere max-h-[40vh] overflow-auto'>
                 {message}
-            </span>
-            <button onClick={handleCancel}>Cancel</button>
-            <button onClick={handleConfirm}>Confirm</button>
-        </>
+            </p>
+            <div className='flex gap-3 justify-center'>
+                <button 
+                    onClick={handleCancel}
+                    className='glass-button'
+                >
+                    Cancel
+                </button>
+                <button 
+                    onClick={handleConfirm}
+                    className='glass-button glass-button-tinted'
+                >
+                    Confirm
+                </button>
+            </div>
+        </div>
     )
 }

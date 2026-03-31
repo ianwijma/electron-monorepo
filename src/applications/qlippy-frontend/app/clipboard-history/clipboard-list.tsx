@@ -1,3 +1,5 @@
+'use client';
+
 import {
     ClipboardItem,
 } from "qlippy-common/src/settings/clipboard.settings.types";
@@ -26,7 +28,7 @@ export const ClipboardList = ({ history, selectedIndex, onItemClicked, onItemDou
     indexRef.current = 0
 
     return (
-        <ul className='flex flex-col gap-1'>
+        <ul className='flex flex-col gap-2 p-2'>
             {
                 Object.keys(history).map((group, index  ) => {
                     const items = history[group] ?? [];
@@ -34,11 +36,11 @@ export const ClipboardList = ({ history, selectedIndex, onItemClicked, onItemDou
                     return (
                         <li
                             key={group}
-                            className='flex flex-col gap-1 justify-center items-center'
+                            className='flex flex-col gap-2 justify-center items-center'
                             style={{zIndex: index}}
                         >
                             <span
-                                className='h-8 w-1/2 text-gray-500 flex justify-center rounded-xl items-center bg-white bg-opacity-70 sticky position-[webkit-sticky] top-0'
+                                className='group-header sticky top-2 z-10'
                             >
                                 {group}
                             </span>
@@ -53,7 +55,7 @@ export const ClipboardList = ({ history, selectedIndex, onItemClicked, onItemDou
                                         return (
                                             <li
                                                 key={id}
-                                                className={`h-8 text-gray-500 flex items-center pl-1 bg-opacity-70 ${isSelected ? 'bg-gray-200' : 'bg-white'}`}
+                                                className={`glass-card px-3 py-2 text-text-primary flex items-center cursor-pointer transition-all duration-fast ${isSelected ? 'glass-card-selected' : ''}`}
                                                 ref={isSelected ? selectedRef : null}
                                                 onClick={() => onItemClicked(currentIndex)}
                                                 onDoubleClick={() => onItemDoubleClick(currentIndex)}
@@ -83,7 +85,7 @@ const ClipboardListItem = ({item}: ClipboardListItemParams) => {
         case 'text': {
             const {text} = item;
             return (
-                <div className="truncate" data-text>
+                <div className="truncate text-sm" data-text>
                     {text}
                 </div>
             )
@@ -91,7 +93,7 @@ const ClipboardListItem = ({item}: ClipboardListItemParams) => {
         case 'html': {
             const {htmlText} = item;
             return (
-                <div className="truncate" data-html>
+                <div className="truncate text-sm" data-html>
                     {htmlText}
                 </div>
             )
@@ -99,7 +101,7 @@ const ClipboardListItem = ({item}: ClipboardListItemParams) => {
         case 'url': {
             const {url} = item;
             return (
-                <div className='truncate' data-url>
+                <div className='truncate text-sm text-tint-blue' data-url>
                     {url}
                 </div>
             )
@@ -107,7 +109,7 @@ const ClipboardListItem = ({item}: ClipboardListItemParams) => {
         case 'path': {
             const {path} = item;
             return (
-                <div className='truncate' data-path>
+                <div className='truncate text-sm' data-path>
                     {path}
                 </div>
             )
@@ -115,19 +117,20 @@ const ClipboardListItem = ({item}: ClipboardListItemParams) => {
         case 'colour': {
             const {colour, colourText} = item;
             return (
-                <div className='truncate flex items-center gap-1' data-colour>
-                    <span style={{ backgroundColor: colour }} className="w-8 h-8" /> {colourText}
+                <div className='truncate text-sm flex items-center gap-2' data-colour>
+                    <span style={{ backgroundColor: colour }} className="w-5 h-5 rounded-md shadow-sm" /> 
+                    <span>{colourText}</span>
                 </div>
             )
         }
         case 'image': {
             const {imageFilePath} = item;
             return (
-                <div className='truncate flex items-center gap-1 h-full' data-image>
-                    <span>Image:</span>
+                <div className='truncate text-sm flex items-center gap-2 h-full' data-image>
+                    <span className="text-text-secondary">Image:</span>
                     {
                         imageFilePath
-                            ? <img className='h-full max-w-[75%]' src={`app://${imageFilePath}`} alt='Clipboard image content' draggable={false} />
+                            ? <img className='h-8 rounded-md shadow-sm' src={`app://${imageFilePath}`} alt='Clipboard image content' draggable={false} />
                             : ''
                     }
                 </div>

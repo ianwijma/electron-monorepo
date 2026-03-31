@@ -1,34 +1,24 @@
-import React, {CSSProperties, PropsWithChildren} from "react";
+import React, {PropsWithChildren} from "react";
 import Head from "next/head";
 
 export type BaseContainerProps = PropsWithChildren<{
     title: string;
     titleBar: React.ReactNode;
-    color?: string;
-    borderColor?: string;
 }>
 
 export const BaseContainer = ({
                                   children,
                                   title,
                                   titleBar,
-                                  color = '#3c3f41',
-                                  borderColor = null
                               }: BaseContainerProps) => {
-    const borderStyles: CSSProperties = borderColor ? {
-        borderColor: borderColor,
-        borderWidth: '2px',
-        borderStyle: 'solid',
-    } : {}
     return (
         <>
             <Head>
                 <title>{title}</title>
             </Head>
-            <div className='w-screen h-screen flex flex-col overflow-hidden'
-                 style={{backgroundColor: color, ...borderStyles}}>
+            <div className='w-screen h-screen flex flex-col overflow-hidden glass-regular rounded-2xl shadow-glass animate-fade-in'>
                 {titleBar}
-                <div className='flex flex-col h-full py-1 px-1 overflow-x-auto whitespace-nowrap'>
+                <div className='flex-1 flex flex-col overflow-x-auto whitespace-nowrap p-2'>
                     {children}
                 </div>
             </div>

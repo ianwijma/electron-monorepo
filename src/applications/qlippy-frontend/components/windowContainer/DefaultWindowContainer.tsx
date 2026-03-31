@@ -24,14 +24,14 @@ export const DefaultWindowContainer = ({
                                            onMinimizeClicked,
                                            onCloseClicked,
                                        }: DefaultWindowContainerProps) => {
-    return <div className='w-screen h-screen flex flex-col overflow-hidden rounded-xl'>
+    return <div className='w-screen h-screen flex flex-col overflow-hidden rounded-2xl shadow-glass'>
         <Head>
             <title>{title}</title>
         </Head>
         {
             hideTitleBar ? '' : <TitleBar {...{showMinimize, showClose, onMinimizeClicked, onCloseClicked}}>{title}</TitleBar>
         }
-        <div className={className}>
+        <div className={`flex-1 overflow-hidden transition-glass ${className}`}>
             {children}
         </div>
     </div>
