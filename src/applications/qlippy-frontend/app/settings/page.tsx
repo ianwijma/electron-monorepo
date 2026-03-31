@@ -5,6 +5,15 @@ import {KeyboardSettings} from "qlippy-common/src/settings/keyboard.settings.typ
 import {useSettings} from "frontend-essentials/src/hooks/useSettings";
 import {DefaultWindowContainer} from "../../components/windowContainer/DefaultWindowContainer";
 import {defaultLogo} from 'qlippy-common/src/logos'
+import {eventHandler} from "frontend-essentials/src/utilities/eventHandler";
+import {
+    exportClipboardHistoryEventName,
+    ExportClipboardHistoryEventData
+} from "qlippy-common/src/events/exportClipboardHistory.event";
+import {
+    importClipboardHistoryEventName,
+    ImportClipboardHistoryEventData
+} from "qlippy-common/src/events/importClipboardHistory.event";
 
 export default function SettingsPage() {
     const {isLoading, settings, updateSettings} = useSettings<KeyboardSettings>('keyboard');
@@ -46,6 +55,14 @@ export default function SettingsPage() {
         })
     }
 
+    const handleExport = () => {
+        eventHandler.emit<ExportClipboardHistoryEventData>(exportClipboardHistoryEventName, {});
+    }
+
+    const handleImport = () => {
+        eventHandler.emit<ImportClipboardHistoryEventData>(importClipboardHistoryEventName, {});
+    }
+
     return (
         <DefaultWindowContainer title='Qlippy Settings' className='glass-regular animate-fade-in'>
             <div className='h-full p-6 flex flex-col gap-6'>
@@ -69,6 +86,31 @@ export default function SettingsPage() {
                         </p>
                         <div className='mt-2'>
                             <KeyboardShortcuts onShortcutChanged={onActivatorChanged} accelerate={activateShortcut.shortcut}/>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='glass-card p-4'>
+                    <div className='flex flex-col gap-2'>
+                        <label className='text-sm font-medium text-text-primary'>
+                            Export / Import
+                        </label>
+                        <p className='text-xs text-text-secondary'>
+                            Save your clipboard history to a file or restore it on another machine.
+                        </p>
+                        <div className='mt-2 flex gap-3'>
+                            <button
+                                onClick={handleExport}
+                                className='px-4 py-2 text-sm font-medium text-text-primary bg-surface-secondary hover:bg-surface-tertiary rounded-lg transition-colors'
+                            >
+                                Export Clipboard
+                            </button>
+                            <button
+                                onClick={handleImport}
+                                className='px-4 py-2 text-sm font-medium text-text-primary bg-surface-secondary hover:bg-surface-tertiary rounded-lg transition-colors'
+                            >
+                                Import Clipboard
+                            </button>
                         </div>
                     </div>
                 </div>
