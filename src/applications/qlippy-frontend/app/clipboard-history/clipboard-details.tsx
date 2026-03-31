@@ -1,3 +1,5 @@
+'use client';
+
 import {ClipboardItem} from "qlippy-common/src/settings/clipboard.settings.types";
 import {memo} from "react";
 import {HtmlFrame} from "../../components/htmlFrame";
@@ -174,7 +176,7 @@ const Metadata = ({ item }: MetadataProps) => {
                                 {Object.keys(value).map((subKey: string) => {
                                     const subValue = value[subKey];
 
-                                    if (!value) return '';
+                                    if (!subValue) return '';
 
                                     return (
                                         <li key={subKey} className='text-text-tertiary'>

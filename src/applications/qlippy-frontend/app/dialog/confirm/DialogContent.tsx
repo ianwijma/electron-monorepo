@@ -13,7 +13,7 @@ export const DialogContent = () => {
 
     return (
         <div className='floating-panel p-6 w-[400px] max-w-[90vw] animate-scale-in'>
-            <p className='text-text-primary text-center mb-6'>
+            <p className='text-text-primary text-center mb-6 break-words overflow-wrap-anywhere max-h-[40vh] overflow-auto'>
                 {message}
             </p>
             <div className='flex gap-3 justify-center'>

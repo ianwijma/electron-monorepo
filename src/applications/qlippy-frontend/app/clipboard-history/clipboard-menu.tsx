@@ -1,3 +1,5 @@
+'use client';
+
 import {ClipboardItem} from "qlippy-common/src/settings/clipboard.settings.types";
 import {Fragment, memo, useMemo} from "react";
 
@@ -123,7 +125,7 @@ export const ClipboardMenu = memo(({show, item}: ClipboardMenuParams) => {
                                                 <Fragment key={keyItem}>
                                                     {!!index && <span className='text-text-tertiary'>+</span>}
                                                     <kbd className='glass-capsule px-2 py-1 text-xs font-mono'>
-                                                        {keyItem.toWellFormed()}
+                                                        {keyItem}
                                                     </kbd>
                                                 </Fragment>
                                             ))}

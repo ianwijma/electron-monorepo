@@ -1,11 +1,9 @@
-import React, {CSSProperties, PropsWithChildren} from "react";
+import React, {PropsWithChildren} from "react";
 import Head from "next/head";
 
 export type BaseContainerProps = PropsWithChildren<{
     title: string;
     titleBar: React.ReactNode;
-    color?: string;
-    borderColor?: string;
 }>
 
 export const BaseContainer = ({

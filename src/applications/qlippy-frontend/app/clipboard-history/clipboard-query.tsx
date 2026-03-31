@@ -1,3 +1,5 @@
+'use client';
+
 import {KeyboardEventHandler, memo, useCallback, useEffect, useRef, useState} from "react";
 import { OpenClipboardHistoryAction } from 'qlippy-common/src/events/openClipboardHistory.event'
 import {ClipboardItem} from "qlippy-common/src/settings/clipboard.settings.types";
@@ -120,7 +122,7 @@ export const ClipboardQuery = memo(({
                     break;
             }
         }
-    }, [selectNext, selectPrevious, confirmSelected, close, deleteSelected, showMenu, hideMenu, openSelected, updateQuery, saveSelected]);
+    }, [query, item, selectNext, selectPrevious, confirmSelected, close, deleteSelected, showMenu, hideMenu, openSelected, updateQuery, pinSelected, restoreSelectedImage, restoreSelectedText, saveSelected]);
     const [currentTip] = useState(getRandomTip());
 
     const handleKeyUp: KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {
@@ -138,7 +140,7 @@ export const ClipboardQuery = memo(({
         const inputEl = inputRef.current;
         const selectEl = selectRef.current;
 
-        if (!inputRef || !selectRef) return;
+        if (!inputEl || !selectEl) return;
 
         type Focus = 'input' | 'select' | null;
         let currentFocus: Focus = null;
@@ -153,8 +155,11 @@ export const ClipboardQuery = memo(({
             }, 20);
         };
 
-        inputEl.addEventListener('focus', handleFocus('input'));
-        selectEl.addEventListener('focus', handleFocus('select'));
+        const onInputFocus = handleFocus('input');
+        const onSelectFocus = handleFocus('select');
+
+        inputEl.addEventListener('focus', onInputFocus);
+        selectEl.addEventListener('focus', onSelectFocus);
         inputEl.addEventListener('blur', handleBlur);
         selectEl.addEventListener('blur', handleBlur);
 
@@ -163,12 +168,12 @@ export const ClipboardQuery = memo(({
         }, 50);
 
         return () => {
-            inputEl.removeEventListener('focus', handleFocus('input'));
-            selectEl.removeEventListener('focus', handleFocus('select'));
+            inputEl.removeEventListener('focus', onInputFocus);
+            selectEl.removeEventListener('focus', onSelectFocus);
             inputEl.removeEventListener('blur', handleBlur);
             selectEl.removeEventListener('blur', handleBlur);
         }
-    }, [inputRef, selectRef]);
+    }, []);
 
     return (
         <div className="h-full flex gap-2 justify-between items-center">

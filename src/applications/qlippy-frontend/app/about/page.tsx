@@ -39,7 +39,7 @@ export default function AboutPage() {
             </div>
 
             <div className='text-xs w-full text-center pb-4 text-text-tertiary'>
-                Developed with ❤️ by <a className='not-draggable pointer-events-auto text-tint-blue hover:underline' href='https://ian.wij.ma/' target='_blank'>Ian Wijma</a>
+                Developed with ❤️ by <a className='not-draggable pointer-events-auto text-tint-blue hover:underline' href='https://ian.wij.ma/' target='_blank' rel='noopener noreferrer'>Ian Wijma</a>
             </div>
         </div>
     );

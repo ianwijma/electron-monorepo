@@ -329,7 +329,7 @@ export default function ClipboardHistoryPage() {
                         onItemClicked={handleClick}
                         onItemDoubleClick={handleDoubleClicked}/>
                 </div>
-                <div className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden rounded-xl">
+                <div className="row-span-1 col-span-1 overflow-y-auto overflow-x-hidden rounded-xl not-draggable">
                     <ClipboardDetails item={selectedItem}/>
                 </div>
             </div>

@@ -1,3 +1,5 @@
+'use client';
+
 import {
     ClipboardItem,
 } from "qlippy-common/src/settings/clipboard.settings.types";
