@@ -3,7 +3,7 @@
   "version": "0.0.37",
   "description": "Qlip that!",
   "main": ".webpack/main",
-  "productName": "qlippy-dev",
+  "productName": "qlippy",
   "scripts": {
     "dev": "nodemon",
     "dev-reset": "npm run start --reset",
