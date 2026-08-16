@@ -41,7 +41,7 @@ export const historyToFile = async (
                 item.textPath = denormalizeFilePath(item.textPath);
             }
 
-            if (item.type === "html") {
+            if (item.type === "html" && item.htmlPath && item.htmlTextPath) {
                 item.htmlPath = denormalizeFilePath(item.htmlPath);
                 item.htmlTextPath = denormalizeFilePath(item.htmlTextPath);
             }
@@ -85,7 +85,7 @@ export const historyFromFile = async (
                 item.textPath = normalizeFilePath(item.textPath);
             }
 
-            if (item.type === "html") {
+            if (item.type === "html" && item.htmlPath && item.htmlTextPath) {
                 item.htmlPath = normalizeFilePath(item.htmlPath);
                 item.htmlTextPath = normalizeFilePath(item.htmlTextPath);
             }
