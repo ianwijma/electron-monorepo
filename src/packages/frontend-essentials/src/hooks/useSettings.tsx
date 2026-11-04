@@ -11,6 +11,13 @@ import {useListen} from "./useEventHandler";
 import {responseHandler} from "../utilities/responseHandler";
 import {eventHandler} from "../utilities/eventHandler";
 
+/**
+ * Settings can be large (e.g. the clipboard history, which carries the content of every item).
+ * Cloning them on the main thread and sending them over IPC can take well over a second for a
+ * big history, so the timeout only exists to surface a backend that never answers at all.
+ */
+const SETTINGS_REQUEST_TIMEOUT_MS = 30_000;
+
 export const useSettings = <T extends BaseSettings>(settingsName: string) => {
     const [settings, setSettings] = useState<T>(null);
     const isLoading = settings === null;
@@ -20,12 +27,12 @@ export const useSettings = <T extends BaseSettings>(settingsName: string) => {
             const initialSettings = await responseHandler.requestResponse<SettingsRequestRes<T>, SettingsRequestReq>(
                 settingsRequestName,
                 {settingsName},
-                {timeout: 200}
+                {timeout: SETTINGS_REQUEST_TIMEOUT_MS}
             );
 
             console.log('Setting Initialised', {
                 settingsName,
-                initialSettings
+                version: initialSettings?.version,
             });
 
             setSettings(initialSettings);
@@ -42,7 +49,7 @@ export const useSettings = <T extends BaseSettings>(settingsName: string) => {
             console.log('Setting Updated', {
                 settingsName,
                 name,
-                updatedSettings
+                version: updatedSettings?.version,
             });
             setSettings(updatedSettings);
         }
