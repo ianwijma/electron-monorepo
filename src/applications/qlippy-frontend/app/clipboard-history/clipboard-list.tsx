@@ -3,8 +3,9 @@
 import {
     ClipboardItem,
 } from "qlippy-common/src/settings/clipboard.settings.types";
-import {useEffect, useRef} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {SearchableGroupedHistory} from "./page";
+import {RENDER_BATCH_SIZE, toRenderableGroups} from "./clipboard-list.utils";
 
 export type ClipboardListParams = {
     history: SearchableGroupedHistory,
@@ -15,7 +16,21 @@ export type ClipboardListParams = {
 
 export const ClipboardList = ({ history, selectedIndex, onItemClicked, onItemDoubleClick }: ClipboardListParams) => {
     const selectedRef = useRef<HTMLLIElement>(null);
-    const indexRef = useRef<number>(0);
+    const sentinelRef = useRef<HTMLLIElement>(null);
+    const [renderLimit, setRenderLimit] = useState<number>(RENDER_BATCH_SIZE);
+
+    // Keep the keyboard-selected item renderable, even when it lies beyond the current window.
+    useEffect(() => {
+        if (selectedIndex >= renderLimit) {
+            setRenderLimit(selectedIndex + RENDER_BATCH_SIZE);
+        }
+    }, [selectedIndex, renderLimit]);
+
+    const {groups, totalCount, renderedCount} = useMemo(
+        () => toRenderableGroups(history, renderLimit),
+        [history, renderLimit]
+    );
+    const hasMore = renderedCount < totalCount;
 
     useEffect(() => {
         const selectedEl = selectedRef.current;
@@ -23,16 +38,29 @@ export const ClipboardList = ({ history, selectedIndex, onItemClicked, onItemDou
         if (!selectedEl) return;
 
         selectedEl.scrollIntoView({block: 'nearest'});
-    }, [selectedRef, selectedIndex]);
+    }, [selectedRef, selectedIndex, renderedCount]);
 
-    indexRef.current = 0
+    // Grow the rendered window once the user scrolls to the end of it.
+    useEffect(() => {
+        const sentinelEl = sentinelRef.current;
+
+        if (!sentinelEl || !hasMore || typeof IntersectionObserver === 'undefined') return;
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries.some(({isIntersecting}) => isIntersecting)) {
+                setRenderLimit((limit) => limit + RENDER_BATCH_SIZE);
+            }
+        });
+
+        observer.observe(sentinelEl);
+
+        return () => observer.disconnect();
+    }, [hasMore, renderedCount]);
 
     return (
         <ul className='flex flex-col gap-2 p-2'>
             {
-                Object.keys(history).map((group, index  ) => {
-                    const items = history[group] ?? [];
-
+                groups.map(({group, items, startIndex}, index) => {
                     return (
                         <li
                             key={group}
@@ -47,9 +75,9 @@ export const ClipboardList = ({ history, selectedIndex, onItemClicked, onItemDou
 
                             <ul className='w-full flex flex-col gap-1'>
                                 {
-                                    items.map(({item}) => {
+                                    items.map(({item}, itemIndex) => {
                                         const {id} = item;
-                                        const currentIndex = indexRef.current++;
+                                        const currentIndex = startIndex + itemIndex;
                                         const isSelected = selectedIndex === currentIndex;
 
                                         return (
@@ -69,6 +97,15 @@ export const ClipboardList = ({ history, selectedIndex, onItemClicked, onItemDou
                         </li>
                     )
                 })
+            }
+            {
+                hasMore
+                    ? (
+                        <li ref={sentinelRef} className='text-text-tertiary text-xs text-center py-2'>
+                            Showing {renderedCount} of {totalCount} items
+                        </li>
+                    )
+                    : null
             }
         </ul>
     )

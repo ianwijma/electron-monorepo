@@ -37,14 +37,17 @@ export const createResponseHandler = (eventHandler: EventHandler): ResponseHandl
             return new Promise((resolve, reject) => {
 
                 let done = false;
+                let timeoutHandle: ReturnType<typeof setTimeout> | undefined;
 
                 const stopListening = eventHandler.listen<ResponseObject<RES>>(RESPONSE_NAME, (response) => {
                     log('responseHandler - requestResponse - listen', requestName, response);
 
                     const {requestId: currentRequestId, data: responseData, success, errorMessage} = response;
 
-                    if (currentRequestId === requestId) {
+                    if (currentRequestId === requestId && !done) {
+                        done = true;
                         stopListening();
+                        if (timeoutHandle !== undefined) clearTimeout(timeoutHandle);
 
                         if (success) {
                             // @ts-expect-error - IDK why TS is sad, the data is of correct type...
@@ -52,8 +55,6 @@ export const createResponseHandler = (eventHandler: EventHandler): ResponseHandl
                         } else {
                             reject(`ResponseHandler - fetch failure: ${errorMessage}`);
                         }
-
-                        done = true;
                     }
                 });
 
@@ -64,8 +65,13 @@ export const createResponseHandler = (eventHandler: EventHandler): ResponseHandl
                 })
 
                 if ('timeout' in options && options.timeout > 0) {
-                    setTimeout(() => {
-                        if (!done) reject('ResponseHandler - Timed out')
+                    timeoutHandle = setTimeout(() => {
+                        if (done) return;
+
+                        done = true;
+                        // Stop listening, otherwise a late response keeps a dangling listener around forever.
+                        stopListening();
+                        reject(`ResponseHandler - Timed out after ${options.timeout}ms (${requestName})`);
                     }, options.timeout);
                 }
             })
