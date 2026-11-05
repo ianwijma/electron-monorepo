@@ -25,5 +25,5 @@
     "ts-jest": "^29.4.0",
     "zx": "^8.2.4"
   },
-  "packageManager": "pnpm@9.15.0+sha512.76e2339241bff314c0edf8abf8239c714bf9c5ac90470bf23054d3d896f9ce2e7e4fce5e1ce2d3a5c4f5c2a7d6b1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2"
+  "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c"
 }
