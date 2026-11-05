@@ -9,6 +9,7 @@ import {dialogRequestName, DialogRequestRes, DialogRequestReq} from 'qlippy-comm
 import {OpenDialogOptions} from 'qlippy-common/src/dialog'
 import {SimpleEventBusData} from "common-essentials/src/types/eventbus.types";
 import {eventHandler} from "backend-essentials/src/utilities/eventHandler";
+import {defaultLogo} from 'qlippy-common/src/logos';
 
 type CreateDialogParams = {
     title: string;
@@ -39,6 +40,7 @@ const createDialog = <OP extends OpenParams, OR extends AnyObject>({
             return new Promise<OR>(async (resolve, reject) => {
                 const {open, destroy, initialize, getUniqueWindowId} = createWindow({
                     developmentPort: 9100,
+                    icon: defaultLogo,
                     title,
                     route,
                     resizable,

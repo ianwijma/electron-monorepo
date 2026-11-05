@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Qlippy</title>
+  <desc>A clipboard of copied history whose board grows a tail, forming the Q of Qlippy.</desc>
+  <defs>
+    <linearGradient id="qlippy-bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#4338CA"/>
+    </linearGradient>
+    <linearGradient id="qlippy-shine" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".18"/>
+      <stop offset=".5" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#qlippy-bg)"/>
+  <rect width="512" height="512" rx="116" fill="url(#qlippy-shine)"/>
+  <!-- board + Q tail -->
+  <rect x="132" y="126" width="248" height="284" rx="96" fill="#1E1B4B" opacity=".28"/>
+  <rect x="132" y="112" width="248" height="284" rx="96" fill="#F8FAFC"/>
+  <path d="M310 372 Q350 414 412 404" fill="none" stroke="#F8FAFC" stroke-width="44" stroke-linecap="round"/>
+  <!-- clip -->
+  <rect x="196" y="84" width="120" height="60" rx="22" fill="#1E1B4B"/>
+  <rect x="232" y="100" width="48" height="12" rx="6" fill="#8B5CF6"/>
+  <!-- clipboard history: latest entry highlighted -->
+  <rect x="180" y="196" width="152" height="56" rx="16" fill="#7C3AED"/>
+  <rect x="198" y="216" width="88" height="16" rx="8" fill="#F5F3FF"/>
+  <rect x="188" y="280" width="128" height="16" rx="8" fill="#C7D2FE"/>
+  <rect x="200" y="320" width="92" height="16" rx="8" fill="#C7D2FE"/>
+</svg>
