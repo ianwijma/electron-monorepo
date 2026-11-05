@@ -1,7 +1,9 @@
 import {createWindow} from "backend-essentials/src/utilities/createWindow";
+import {defaultLogo} from "qlippy-common/src/logos";
 
 export const settingsWindow = createWindow({
     developmentPort: 9100,
+    icon: defaultLogo,
     title: 'Qlippy Settings',
     route: 'settings',
     width: 1280,

@@ -1,4 +1,4 @@
-import {app, BrowserWindow, screen, shell} from "electron";
+import {app, BrowserWindow, nativeImage, screen, shell} from "electron";
 import path from "path";
 import {isDev} from "./isDev";
 import {eventBus} from "./eventBus";
@@ -36,6 +36,8 @@ export type CreateWindowParams = {
     canOpenFn?: (params: { window: BrowserWindow }) => boolean | Promise<boolean>,
     onBlur?: OnEvents,
     transparent?: boolean,
+    /** Window/taskbar icon: a file path or a data URL. */
+    icon?: string,
 }
 
 type OpenParams = { urlParams?: UrlParams }
@@ -72,6 +74,7 @@ export const createWindow = ({
                                  onBlur = () => undefined,
                                  hasShadow = true,
                                  transparent = false,
+                                 icon = undefined,
                              }: CreateWindowParams): CreateWindowReturn => {
     let window: BrowserWindow;
     let loadWindowPromise: Promise<void>;
@@ -332,6 +335,7 @@ export const createWindow = ({
             movable,
             hasShadow,
             transparent,
+            icon: icon?.startsWith('data:') ? nativeImage.createFromDataURL(icon) : icon,
             webPreferences: {
                 preload: path.join(__dirname, 'preload.js'),
             },
